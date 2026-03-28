@@ -5,12 +5,12 @@ description: "Monitor agent uptime and status with automated health reporting."
 
 ## Overview
 
-Connected agents report **health checks** to Celerflow at regular intervals. Health data powers the dashboard's real-time monitoring, alerting, and fleet-level status views.
+Connected agents report **health checks** to CelerFlow at regular intervals. Health data powers the dashboard's real-time monitoring, alerting, and fleet-level status views.
 
 ## How it works
 
-1. The agent sends a health report to Celerflow at a configurable interval.
-2. Celerflow records the report and updates the agent's status.
+1. The agent sends a health report to CelerFlow at a configurable interval.
+2. CelerFlow records the report and updates the agent's status.
 3. If no report arrives within the expected window, the agent is marked as **stale**.
 
 ## Health report payload
@@ -26,7 +26,7 @@ Each health check includes:
 
 ## Staleness detection
 
-Celerflow runs a background job (`pg_cron`) to detect agents that haven't reported health within their expected interval. Agents with no health report for **30 days** are marked as stale.
+CelerFlow runs a background job (`pg_cron`) to detect agents that haven't reported health within their expected interval. Agents with no health report for **30 days** are marked as stale.
 
 <Warning>
   Stale agents are not automatically removed. They remain visible in the dashboard until manually disconnected or removed.

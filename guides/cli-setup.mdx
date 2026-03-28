@@ -1,6 +1,6 @@
 ---
 title: "CLI setup"
-description: "Install the ocauthz CLI and authenticate with your Celerflow account."
+description: "Install the ocauthz CLI and authenticate with your CelerFlow account."
 ---
 
 <Info>
@@ -34,7 +34,7 @@ ocauthz login
 This starts a device code flow:
 
 1. A URL and code are displayed in the terminal.
-2. Your browser opens to the Celerflow auth page.
+2. Your browser opens to the CelerFlow auth page.
 3. Sign in with Google and confirm the code.
 4. The CLI receives your token and saves it to `~/.ocauthz/credentials.json`.
 
@@ -46,7 +46,7 @@ This starts a device code flow:
 
 | Command | Description |
 |---|---|
-| `ocauthz login` | Authenticate with your Celerflow account. |
+| `ocauthz login` | Authenticate with your CelerFlow account. |
 | `ocauthz connect --code <CODE>` | Connect the local agent to a fleet using a setup code. |
 | `ocauthz status` | Show connection status, last health check, and token info. |
 | `ocauthz doctor` | Run diagnostics and report any configuration issues. |
@@ -64,7 +64,7 @@ ocauthz doctor
 This checks:
 
 - Authentication status
-- Network connectivity to the Celerflow API
+- Network connectivity to the CelerFlow API
 - Bootstrap token validity
 - Agent registration status
 

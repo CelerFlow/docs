@@ -1,12 +1,12 @@
 ---
 title: "MCP proxy"
-description: "Connect any MCP-compatible agent framework to Celerflow for policy enforcement and tracing."
+description: "Connect any MCP-compatible agent framework to CelerFlow for policy enforcement and tracing."
 tag: "PRO"
 ---
 
 ## Overview
 
-The MCP proxy lets you connect **any MCP-compatible agent framework** (CrewAI, LangGraph, Claude Agent SDK, OpenAI Agents SDK, etc.) to Celerflow for policy enforcement and tracing — without installing a plugin.
+The MCP proxy lets you connect **any MCP-compatible agent framework** (CrewAI, LangGraph, Claude Agent SDK, OpenAI Agents SDK, etc.) to CelerFlow for policy enforcement and tracing — without installing a plugin.
 
 ## How it works
 
@@ -35,7 +35,7 @@ The proxy intercepts MCP `tools/call` requests, applies your agent's policies, r
   </Step>
 
   <Step title="Point your agent to the proxy">
-    Replace your MCP server URL with the Celerflow proxy URL:
+    Replace your MCP server URL with the CelerFlow proxy URL:
 
     ```bash
     # Before
@@ -108,5 +108,5 @@ Exceeding the limit returns HTTP 429 with a `Retry-After` header.
 The proxy adds **< 50ms P99** overhead. Policy checks use an in-memory cache (60s TTL), and trace writes are non-blocking.
 
 Response headers include:
-- `X-Celerflow-Proxy-Ms` — proxy overhead in milliseconds.
-- `X-Celerflow-Upstream-Ms` — upstream response time in milliseconds.
+- `X-CelerFlow-Proxy-Ms` — proxy overhead in milliseconds.
+- `X-CelerFlow-Upstream-Ms` — upstream response time in milliseconds.

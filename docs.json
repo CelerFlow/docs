@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Celerflow",
+  "name": "CelerFlow",
   "colors": {
     "primary": "#6366F1",
     "light": "#818CF8",
@@ -103,11 +103,6 @@
     "global": {
       "anchors": [
         {
-          "anchor": "GitHub",
-          "href": "https://github.com/CelerFlow",
-          "icon": "github"
-        },
-        {
           "anchor": "Blog",
           "href": "https://celerflow.ai/blog",
           "icon": "newspaper"
@@ -116,12 +111,6 @@
     }
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:support@celerflow.ai"
-      }
-    ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
@@ -139,8 +128,7 @@
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/celerflow",
-      "github": "https://github.com/CelerFlow"
+      "x": "https://x.com/celerflow"
     }
   }
 }

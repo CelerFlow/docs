@@ -1,0 +1,51 @@
+---
+title: "Ingest trace spans"
+description: "Record tool call trace spans from the plugin or gateway."
+api: "POST /trace"
+---
+
+## Request
+
+Authenticated with bootstrap token or API key. Accepts a batch of spans.
+
+```json
+{
+  "action": "ingest",
+  "spans": [
+    {
+      "trace_type": "before",
+      "span_id": "span_abc123",
+      "tool_name": "gmail_send",
+      "tool_args_summary": "to: team@celerflow.ai",
+      "category": "outbound_write",
+      "service_name": "gmail",
+      "task_name": "Write weekly report",
+      "task_group_id": "session_xyz"
+    },
+    {
+      "trace_type": "after",
+      "span_id": "span_abc123",
+      "tool_name": "gmail_send",
+      "status": "allowed",
+      "result_summary": "Email sent to team@celerflow.ai",
+      "duration_ms": 1200,
+      "category": "outbound_write",
+      "service_name": "gmail",
+      "task_name": "Write weekly report",
+      "task_group_id": "session_xyz"
+    }
+  ]
+}
+```
+
+## Response
+
+```json
+{
+  "ingested": 2
+}
+```
+
+<Tip>
+  The plugin buffers spans locally and flushes in batches every few seconds to minimize API calls.
+</Tip>

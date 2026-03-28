@@ -1,22 +1,16 @@
 ---
 title: "Generate setup code"
-description: "Generate a one-time setup code for connecting an agent to a fleet."
-api: "POST /generate-setup-code"
+description: "Generate a one-time code for connecting an agent to a workspace."
+api: "POST /agent"
 ---
 
 ## Request
 
-<ParamField body="fleet_id" type="string" required>
-  The fleet UUID to generate a setup code for.
-</ParamField>
-
-### Example
-
-```bash
-curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/generate-setup-code \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"fleet_id": "fleet_abc123"}'
+```json
+{
+  "action": "generate-setup-code",
+  "fleet_id": "uuid"
+}
 ```
 
 ## Response
@@ -24,7 +18,7 @@ curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/generate-setu
 ```json
 {
   "code": "ABC123",
-  "fleet_id": "fleet_abc123",
+  "fleet_id": "uuid",
   "expires_at": "2026-03-28T07:15:00Z"
 }
 ```

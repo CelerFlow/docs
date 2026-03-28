@@ -1,74 +1,76 @@
 ---
 title: "Introduction"
-description: "CelerFlow is a control plane for AI agents — monitor, secure, and manage your agents across any framework from a single dashboard."
+description: "CelerFlow is an agent control plane — see what your AI agents do, control what they can access, and stop them when things go wrong."
 ---
 
 ## What is CelerFlow?
 
-CelerFlow gives teams **visibility and control** over their AI agents in production. Whether you're running agents built with OpenClaw, CrewAI, LangGraph, or any MCP-compatible framework, CelerFlow provides a unified control plane for monitoring health, enforcing policies, and auditing tool usage.
+CelerFlow is a **governance platform for AI agents**. It gives you visibility into every tool call your agents make, service-level permission controls, and a kill switch when something goes wrong.
 
-Think of it as the **ops layer** your AI agents are missing.
+One sentence: **"Any agent, one command to connect. See it, control it, kill it."**
 
 <CardGroup cols={2}>
-  <Card title="Fleet management" icon="server">
-    Organize agents into fleets. Monitor status, health, and uptime from one dashboard.
+  <Card title="Tracing" icon="timeline">
+    Every tool call is recorded and classified — outbound writes are highlighted, local reads are hidden by default. Traces are grouped by task for easy browsing.
   </Card>
 
-  <Card title="Policy enforcement" icon="shield-check">
-    Define what tools agents can use, when they need human approval, and what's blocked entirely.
+  <Card title="Service permissions" icon="shield-check">
+    Control access at the service level (Gmail, Notion, GitHub...) with separate read/write toggles. Write operations can require human approval.
   </Card>
 
-  <Card title="Trace & audit" icon="timeline">
-    Every tool call is logged with parameters, results, and timing. Export for compliance or debugging.
+  <Card title="Kill switch" icon="power-off">
+    Terminate any agent instantly from the dashboard. All tool calls are blocked within seconds via Supabase Realtime push.
   </Card>
 
-  <Card title="MCP proxy" icon="route">
-    Connect any MCP-compatible agent to CelerFlow for policy checks and tracing — no plugin required.
+  <Card title="Agent score" icon="chart-line">
+    Every agent gets a 0–100 health score (A–F grade) based on uptime, success rate, block rate, and response time. Track trends over 7/30 days.
   </Card>
 </CardGroup>
+
+## Two ways to connect
+
+CelerFlow supports two integration modes:
+
+| | **OpenClaw plugin** | **MCP Gateway** |
+|---|---|---|
+| For | OpenClaw agents | Any MCP-compatible framework |
+| Setup | `celerflow connect` | Change MCP server URL |
+| Coverage | **All tool calls** (built-in + MCP) | MCP tool calls only |
+| Latency | Zero (local hook) | ~10–50ms |
+| Features | Full (tracing, termination, permissions, HITL, score, token stats) | Tracing, permissions, HITL |
+
+<Columns cols={2}>
+  <Card title="OpenClaw plugin" icon="plug" href="/integration/openclaw-plugin">
+    Deepest integration. Hooks into every tool call locally.
+  </Card>
+
+  <Card title="MCP Gateway" icon="route" href="/integration/mcp-gateway">
+    Works with LangGraph, CrewAI, OpenAI Agents SDK, Strands, Mastra — any framework with MCP client support.
+  </Card>
+</Columns>
 
 ## How it works
 
 <Steps>
-  <Step title="Create a fleet">
-    Sign in to CelerFlow and create a fleet to group your agents by project, team, or environment.
+  <Step title="Connect your agent">
+    Install the CelerFlow plugin or point your MCP client to `gateway.celerflow.ai`. Authenticate with the `celerflow` CLI.
   </Step>
 
-  <Step title="Connect your agents">
-    Use the `ocauthz` CLI to authenticate and connect agents to your fleet. Each agent gets a bootstrap token for secure communication.
+  <Step title="Traces flow automatically">
+    Every tool call is recorded with category (outbound write, local read, etc.), service name, parameters, and result. Traces are grouped by task/session.
   </Step>
 
-  <Step title="Set policies">
-    Configure tool-level permissions: allow, block, or require human-in-the-loop confirmation for specific tools.
+  <Step title="Set service permissions">
+    From the dashboard, configure per-service read/write permissions. Flag dangerous write operations for human approval.
   </Step>
 
-  <Step title="Monitor and audit">
-    Watch agent health in real time. Review traces, analyze tool usage patterns, and export audit logs when needed.
+  <Step title="Monitor and act">
+    The workspace overview shows agent health scores, risk alerts, token usage, and blocked operations. Hit the kill switch if something goes wrong.
   </Step>
 </Steps>
 
 ## Get started
 
 <Card title="Quickstart" icon="rocket" href="/quickstart" horizontal>
-  Set up your first fleet and connect an agent in under 5 minutes.
+  Connect your first agent and see traces in under 5 minutes.
 </Card>
-
-## Explore
-
-<Columns cols={2}>
-  <Card title="Core concepts" icon="book" href="/concepts/agents">
-    Understand agents, fleets, policies, and traces.
-  </Card>
-
-  <Card title="CLI setup" icon="terminal" href="/guides/cli-setup">
-    Install the CLI and authenticate.
-  </Card>
-
-  <Card title="MCP proxy" icon="route" href="/guides/mcp-proxy">
-    Connect any MCP-compatible framework without a plugin.
-  </Card>
-
-  <Card title="API reference" icon="code" href="/api-reference/introduction">
-    Full REST API documentation for programmatic access.
-  </Card>
-</Columns>

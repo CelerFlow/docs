@@ -5,54 +5,81 @@ description: "How CelerFlow registers, monitors, and manages AI agents."
 
 ## Overview
 
-An **agent** in CelerFlow represents a single AI agent instance connected to your control plane. Each agent has a unique identity, belongs to a fleet, and reports health status at regular intervals.
-
-## Agent lifecycle
-
-```mermaid
-stateDiagram-v2
-    [*] --> Registered: ocauthz connect
-    Registered --> Healthy: Health check passes
-    Healthy --> Stale: No health report for 30 days
-    Stale --> Healthy: Health check resumes
-    Healthy --> Disconnected: ocauthz disconnect
-    Stale --> Removed: ocauthz remove
-    Disconnected --> [*]
-    Removed --> [*]
-```
+An **agent** in CelerFlow is a single AI agent instance connected to the control plane. Each agent has a unique identity, belongs to a workspace, and reports health and traces.
 
 ## Agent states
 
-| State | Description |
+CelerFlow tracks two independent status dimensions:
+
+### Connection status
+
+| Status | Description |
 |---|---|
-| **Registered** | Agent has connected but hasn't reported health yet. |
-| **Healthy** | Agent is actively reporting health checks. |
-| **Stale** | No health report received in 30+ days. |
-| **Disconnected** | Agent was gracefully disconnected by the user. |
-| **Removed** | Agent and its data have been permanently deleted. |
+| `connected` | Agent is online and reporting. |
+| `stale` | No health report in 30+ days. |
+| `disconnected` | Gracefully disconnected by user. |
+
+### Termination status
+
+| Status | Description |
+|---|---|
+| `active` | Agent operates normally. |
+| `terminated` | All tool calls blocked. Set via kill switch. |
+| `idle` | Online but not actively processing. |
+
+<Note>
+  These are independent. An agent can be `connected` + `terminated` — it's online but all tool calls are blocked until you re-enable it.
+</Note>
 
 ## Agent identity
 
 Each agent is identified by:
 
-- **Agent ID** — a unique UUID assigned on registration.
-- **Agent name** — a human-readable name (defaults to hostname).
-- **Bootstrap token** — a rotating secret used for authenticated API calls.
+- **Agent ID** — UUID assigned on registration.
+- **Name** — human-readable (defaults to hostname).
+- **Device info** — hostname, OS, fingerprint, OpenClaw version.
+- **Bootstrap token** — a rotating secret for authenticated API calls.
+- **Workspace path** — the local directory the agent operates in.
 
-<Note>
-  Bootstrap tokens rotate automatically. The CLI handles token rotation transparently. If you're integrating directly via API, call the [rotate token](/api-reference/auth/rotate-token) endpoint periodically.
-</Note>
+## Agent score
 
-## Health reporting
+Every agent gets a **0–100 health score** calculated hourly:
 
-Connected agents report health at configurable intervals. Each health check includes:
+| Component | Weight | What it measures |
+|---|---|---|
+| Uptime | 30 pts | Last health check recency |
+| Success rate | 25 pts | Tool call success vs error ratio (24h) |
+| Block rate | 20 pts | Low = good; high block rate indicates misconfiguration or prompt injection |
+| Response time | 15 pts | Average tool call duration (24h) |
+| Config | 10 pts | Has active traces |
 
-- Agent uptime
-- Current status
-- Timestamp
+Scores map to grades: **A** (90+), **B** (75+), **C** (60+), **D** (40+), **F** (below 40).
 
-Health data powers the dashboard's real-time agent monitoring and alerting.
+Score history is recorded hourly and available as a trend chart over 7/30 days.
 
-<Card title="Health checks" icon="heart-pulse" href="/concepts/health-checks" horizontal>
-  Deep dive into health check configuration and monitoring.
-</Card>
+## Kill switch
+
+From the dashboard or API, you can **terminate** an agent instantly:
+
+1. Termination status is set to `terminated` in the database.
+2. The CelerFlow plugin receives the update via Supabase Realtime (< 1 second).
+3. All subsequent tool calls are blocked with the message: *"Agent terminated by user. Re-enable from CelerFlow Dashboard."*
+4. To restore, set the agent back to `active` from the dashboard.
+
+<Warning>
+  Termination is immediate. Any in-flight tool call will complete, but the next call will be blocked.
+</Warning>
+
+## Risk discovery
+
+CelerFlow automatically detects anomalies and surfaces risk alerts:
+
+| Risk type | Trigger | Severity |
+|---|---|---|
+| Token spike | 1h token usage > 3× 7-day average | ⚠️ Warning |
+| Latency spike | Avg tool call time > 5× 7-day average | ⚠️ Warning |
+| High block rate | Block rate > 20% in the last hour | 🔴 Critical |
+| Security anomaly | 3+ consecutive blocked tool attempts | 🔴 Critical |
+| Offline | Health check overdue by 2× configured interval | ⚠️ Warning |
+
+Risk alerts appear on the agent detail page and the workspace overview dashboard.

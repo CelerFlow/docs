@@ -1,21 +1,16 @@
 ---
 title: "Poll device token"
-description: "Poll for the access token after the user has authorized the device code."
-api: "POST /cli-device-token"
+description: "Poll for the access token after user authorization."
+api: "POST /cli"
 ---
 
 ## Request
 
-<ParamField body="device_code" type="string" required>
-  The device code from the [request device code](/api-reference/auth/device-code) response.
-</ParamField>
-
-### Example
-
-```bash
-curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/cli-device-token \
-  -H "Content-Type: application/json" \
-  -d '{"device_code": "dc_abc123"}'
+```json
+{
+  "action": "device-token",
+  "device_code": "dc_abc123"
+}
 ```
 
 ## Response (pending)
@@ -37,5 +32,5 @@ curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/cli-device-to
 ```
 
 <Note>
-  Poll at the interval specified in the device code response (default: 5 seconds). Polling faster may result in rate limiting.
+  Poll at the interval from the device code response (default: 5 seconds). Faster polling may trigger rate limiting.
 </Note>

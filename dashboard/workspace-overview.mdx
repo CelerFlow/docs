@@ -1,0 +1,71 @@
+---
+title: "Workspace overview"
+description: "Your central dashboard — agent health, traces, risk alerts, and token usage at a glance."
+---
+
+## Overview
+
+The workspace overview is the first page you see after logging in. It answers: **"Is everything OK, or do I need to act?"**
+
+## Layout
+
+### Stat cards (top row)
+
+Four summary cards:
+
+| Card | Shows |
+|---|---|
+| **Agents** | Active / idle / terminated count |
+| **Uptime** | Aggregate online rate across all agents |
+| **Traces** | Tool calls recorded today |
+| **Blocked** | Blocked operations count and percentage today |
+
+Each card includes a trend indicator (↑ green / ↓ red) comparing to the previous period.
+
+### Token usage by model
+
+A horizontal bar chart showing token consumption over the last 7 days, broken down by LLM model (Claude Sonnet, GPT-4o, Gemini 2.5 Pro, etc.).
+
+- **OpenClaw agents**: token data is captured by the plugin.
+- **MCP Gateway agents**: requires the framework to report token counts via metadata headers (optional).
+
+### Alerts & suggestions
+
+A feed of active risk alerts and AI-suggested actions:
+
+- 🔴 **Critical**: high block rate, security anomalies.
+- ⚠️ **Warning**: token spikes, latency spikes, offline agents.
+- Each alert links to the relevant agent detail page.
+
+### Agent table
+
+A table of all agents in the current workspace:
+
+| Column | Description |
+|---|---|
+| Name | Agent name (links to detail page) |
+| Status | Connection + termination status indicators |
+| Score | Health score with letter grade |
+| Traces/24h | Tool call count in the last 24 hours |
+| Risk | Active risk alert level (if any) |
+
+## Navigation
+
+The sidebar navigation for the dashboard:
+
+```
+▣  Workspace Overview
+🤖 Agents
+📊 Tracing
+💰 Payments
+── Settings ──
+⊞  General
+👥 Team
+🔒 API Keys
+🔌 MCP Servers
+✉  Billing
+```
+
+<Tip>
+  Use `⌘K` / `Ctrl+K` to open global search and jump to any agent, workspace, or trace.
+</Tip>

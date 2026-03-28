@@ -1,0 +1,71 @@
+---
+title: "Workspaces"
+description: "Organize agents into workspaces for management and access control."
+---
+
+## Overview
+
+A **workspace** is a logical group of agents. Use workspaces to organize agents by project, team, environment, or any grouping that fits your organization.
+
+<Note>
+  In the database schema and API, workspaces are stored as `agent_fleets`. The dashboard and CLI use the term "workspace".
+</Note>
+
+## Why workspaces?
+
+- **Organization** — group related agents (e.g., "Production", "Staging", "Research team").
+- **Access control** — team members see only workspaces assigned to them.
+- **Monitoring** — view aggregated health, traces, and scores per workspace.
+- **Billing** — usage is tracked per workspace for cost attribution.
+
+## Workspace structure
+
+```
+Organization (your CelerFlow account)
+├── Workspace: Production
+│   ├── Agent: code-reviewer
+│   ├── Agent: deploy-bot
+│   └── Agent: monitoring-agent
+├── Workspace: Staging
+│   └── Agent: test-runner
+└── Workspace: Research
+    ├── Agent: data-analyst
+    └── Agent: paper-reader
+```
+
+Each account has a **default workspace** created automatically on signup.
+
+## Creating a workspace
+
+<Tabs>
+  <Tab title="Dashboard">
+    Click **New workspace** from the workspace switcher in the sidebar.
+  </Tab>
+
+  <Tab title="API">
+    ```bash
+    curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/fleet \
+      -H "Authorization: Bearer YOUR_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{"name": "Production"}'
+    ```
+  </Tab>
+</Tabs>
+
+## Workspace limits
+
+| Plan | Max workspaces |
+|---|---|
+| Free | 1 |
+| Pro | 5 |
+| Team | 20 |
+| Enterprise | Unlimited |
+
+## Workspace switcher
+
+The sidebar includes a workspace switcher (top left) that shows:
+
+- CelerFlow logo + current workspace name
+- Your plan tier badge
+- A dropdown to search and switch between workspaces
+- Option to create a new workspace

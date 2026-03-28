@@ -1,0 +1,60 @@
+---
+title: "Query traces"
+description: "Search and filter trace data."
+api: "GET /trace"
+---
+
+## Query parameters
+
+<ParamField query="agent_id" type="string">
+  Filter by agent UUID.
+</ParamField>
+
+<ParamField query="category" type="string">
+  Filter by category: `outbound_write`, `outbound_read`, `local_write`, `local_read`.
+</ParamField>
+
+<ParamField query="service_name" type="string">
+  Filter by service: `gmail`, `notion`, `github`, `system`, etc.
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filter by status: `allowed`, `blocked`, `confirmed`, `denied`, `error`.
+</ParamField>
+
+<ParamField query="from" type="string">
+  Start date (ISO 8601).
+</ParamField>
+
+<ParamField query="to" type="string">
+  End date (ISO 8601).
+</ParamField>
+
+<ParamField query="limit" type="number">
+  Max results. Default: 50, max: 200.
+</ParamField>
+
+## Response
+
+```json
+{
+  "traces": [
+    {
+      "id": "uuid",
+      "agent_id": "uuid",
+      "trace_type": "after",
+      "span_id": "span_abc123",
+      "tool_name": "gmail_send",
+      "category": "outbound_write",
+      "service_name": "gmail",
+      "status": "allowed",
+      "result_summary": "Email sent to team@celerflow.ai",
+      "duration_ms": 1200,
+      "task_name": "Write weekly report",
+      "task_group_id": "session_xyz",
+      "created_at": "2026-03-28T07:00:00Z"
+    }
+  ],
+  "total": 1247
+}
+```

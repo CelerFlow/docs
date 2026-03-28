@@ -1,17 +1,11 @@
 ---
 title: "Health checks"
-description: "Monitor agent uptime and status with automated health reporting."
+description: "Monitor agent uptime and status with configurable health reporting."
 ---
 
 ## Overview
 
-Connected agents report **health checks** to CelerFlow at regular intervals. Health data powers the dashboard's real-time monitoring, alerting, and fleet-level status views.
-
-## How it works
-
-1. The agent sends a health report to CelerFlow at a configurable interval.
-2. CelerFlow records the report and updates the agent's status.
-3. If no report arrives within the expected window, the agent is marked as **stale**.
+Connected agents report health checks to CelerFlow at configurable intervals. Health data feeds into the agent score, dashboard monitoring, and staleness detection.
 
 ## Health report payload
 
@@ -19,37 +13,47 @@ Each health check includes:
 
 | Field | Description |
 |---|---|
-| `agent_id` | The reporting agent's UUID. |
-| `status` | Current agent status (e.g., `healthy`, `degraded`). |
-| `uptime` | Time since the agent started. |
-| `timestamp` | When the report was generated. |
+| `status` | `healthy`, `degraded`, or `unhealthy`. |
+| `latency_ms` | Network latency to the CelerFlow API. |
+| `checks` | Detailed sub-checks (JSON) with per-component status, latency, disk space, token expiry, etc. |
+| `openclaw_version` | The version of OpenClaw running the agent. |
+
+## Configurable intervals
+
+| Interval | When to use |
+|---|---|
+| 5 min | High-value production agents you need to watch closely. |
+| 15 min | Active development agents. |
+| **30 min** (default) | Most agents. |
+| 60 min | Low-activity or batch agents. |
+
+Configure the interval from **Dashboard → Agent Settings**.
 
 ## Staleness detection
 
-CelerFlow runs a background job (`pg_cron`) to detect agents that haven't reported health within their expected interval. Agents with no health report for **30 days** are marked as stale.
+A background `pg_cron` job marks agents as **stale** when no health check arrives within **30 days**.
 
 <Warning>
   Stale agents are not automatically removed. They remain visible in the dashboard until manually disconnected or removed.
 </Warning>
 
-## Viewing health status
+## Health status indicators
 
-### Dashboard
+| Indicator | Meaning |
+|---|---|
+| 🟢 Healthy | Reporting normally, last check healthy. |
+| 🟡 Degraded | Reporting, but some sub-checks failing. |
+| 🔴 Unhealthy | Reporting, but critical sub-checks failing. |
+| ⚫ Stale | No health report in 30+ days. |
 
-The fleet view shows each agent with a status indicator:
-
-- 🟢 **Healthy** — reporting normally.
-- 🟡 **Stale** — no recent health report.
-- ⚫ **Disconnected** — agent was disconnected.
-
-### CLI
+## CLI diagnostics
 
 ```bash
-ocauthz status
+celerflow doctor
 ```
 
-Shows the connection status, last health check time, and token expiry for the local agent.
-
-### API
-
-Use the [get health checks](/api-reference/agent/get-health-checks) endpoint to query health data programmatically.
+Runs a local diagnostic that checks:
+- Authentication status
+- Network connectivity to the CelerFlow API
+- Bootstrap token validity
+- Agent registration status

@@ -7,14 +7,36 @@ description: "Plan tiers, pricing, and subscription management."
 
 | | **Free** | **Pro $19/mo** | **Team $49/mo** | **Enterprise** |
 |---|---|---|---|---|
-| Agents | 3 | 20 | 100 | Unlimited |
-| Team members | 1 | 1 | 10 | Unlimited |
-| Trace retention | 3 days | 30 days | 90 days | Custom |
-| HITL confirmations | ❌ | ✅ | ✅ | ✅ |
-| MCP proxy | ❌ | ✅ | ✅ | ✅ |
-| Read/write permissions | ❌ | ✅ | ✅ | ✅ |
-| Audit log export | ❌ | ❌ | ✅ | ✅ |
+| **Agents** | 3 | 20 | 100 | Unlimited |
+| **Workspaces** | 1 | 5 | 20 | Unlimited |
+| **Team members** | 1 | 1 | 10 | Unlimited |
+| **Trace retention** | 3 days | 30 days | 90 days | Custom |
+| **Health check retention** | 7 days | 90 days | 180 days | Custom |
+| | | | | |
+| **Core** | | | | |
+| Dashboard + kill switch | ✅ | ✅ | ✅ | ✅ |
+| Service permission control | ✅ | ✅ | ✅ | ✅ |
+| Enhanced tracing | ✅ | ✅ | ✅ | ✅ |
+| Agent score | ✅ | ✅ | ✅ | ✅ |
+| | | | | |
+| **Advanced** | | | | |
+| Human approval (HITL) | ❌ | ✅ | ✅ | ✅ |
+| MCP Gateway | ❌ | ✅ | ✅ | ✅ |
+| Token usage analytics | ❌ | ✅ | ✅ | ✅ |
+| Risk discovery | ❌ | ✅ | ✅ | ✅ |
+| Agent wallet (payments) | ❌ | ✅ | ✅ | ✅ |
+| API access | ❌ | ✅ | ✅ | ✅ |
+| Config export | ❌ | ✅ | ✅ | ✅ |
+| | | | | |
+| **Team** | | | | |
+| AI suggested actions | ❌ | ❌ | ✅ | ✅ |
 | RBAC | ❌ | ❌ | ✅ | ✅ |
+| Audit log export | ❌ | ❌ | ✅ | ✅ |
+| | | | | |
+| **Enterprise** | | | | |
+| SSO / SCIM | ❌ | ❌ | ❌ | ✅ |
+| SLA | — | — | 99.5% | 99.9% |
+| Private deployment | ❌ | ❌ | ❌ | ✅ |
 
 Annual billing: **20% off** (Pro $15/mo, Team $39/mo).
 
@@ -23,27 +45,23 @@ Annual billing: **20% off** (Pro $15/mo, Team $39/mo).
 1. Go to **Settings → Billing**.
 2. Select a plan and billing interval.
 3. Complete payment via Stripe Checkout.
-4. Your plan upgrades immediately — new limits take effect on next page load.
+4. Your plan upgrades immediately.
 
 ## Pro trial
 
-Pro plan includes a **14-day free trial** (first subscription only, no credit card required for trial period).
+Pro plan includes a **14-day free trial** (first subscription only, no credit card required).
 
 ## Managing your subscription
 
-Click **Manage subscription** in Settings → Billing to:
-
-- Change your plan (upgrade/downgrade)
+Click **Manage subscription** in Settings → Billing to access Stripe's Customer Portal:
+- Change plan (upgrade/downgrade)
 - Update payment method
 - Cancel subscription
 - View invoices
 
-All subscription management goes through Stripe's Customer Portal.
-
 ## Downgrade behavior
 
 When you downgrade or cancel:
-
 - Access continues until the end of your billing period.
 - Trace data beyond the new retention limit is cleaned up by the nightly cron.
 - Agents beyond the new limit are **not** disconnected — you just can't add new ones.

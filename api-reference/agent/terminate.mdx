@@ -1,0 +1,41 @@
+---
+title: "Terminate / restore agent"
+description: "Set an agent's termination status to block or unblock all tool calls."
+api: "POST /agent"
+---
+
+## Request
+
+```json
+{
+  "action": "terminate",
+  "agent_id": "uuid",
+  "termination_status": "terminated"
+}
+```
+
+<ParamField body="action" type="string" required>
+  Must be `"terminate"`.
+</ParamField>
+
+<ParamField body="agent_id" type="string" required>
+  The agent UUID.
+</ParamField>
+
+<ParamField body="termination_status" type="string" required>
+  One of: `active`, `terminated`, `idle`.
+</ParamField>
+
+## Response
+
+```json
+{
+  "agent_id": "uuid",
+  "termination_status": "terminated",
+  "terminated_at": "2026-03-28T07:00:00Z"
+}
+```
+
+<Warning>
+  Setting `terminated` blocks all tool calls immediately. The agent's plugin receives the update via Supabase Realtime within seconds.
+</Warning>

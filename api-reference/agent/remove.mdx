@@ -1,0 +1,27 @@
+---
+title: "Remove agent"
+description: "Permanently remove an agent and all its data."
+api: "DELETE /agent"
+---
+
+## Request
+
+```json
+{
+  "action": "remove",
+  "agent_id": "uuid"
+}
+```
+
+## Response
+
+```json
+{
+  "success": true,
+  "deleted": true
+}
+```
+
+<Warning>
+  Irreversible. All traces, health checks, scores, and configuration for this agent are permanently deleted.
+</Warning>

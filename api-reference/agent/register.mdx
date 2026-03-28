@@ -1,0 +1,46 @@
+---
+title: "Register agent"
+description: "Register a new agent to a workspace using a verified setup code."
+api: "POST /agent"
+---
+
+## Request
+
+```json
+{
+  "action": "register",
+  "setup_code": "ABC123",
+  "agent_name": "code-reviewer",
+  "device_hostname": "macbook-pro",
+  "device_os": "Darwin",
+  "device_fingerprint": "abc123def456",
+  "openclaw_version": "4.2.0"
+}
+```
+
+<ParamField body="action" type="string" required>
+  Must be `"register"`.
+</ParamField>
+
+<ParamField body="setup_code" type="string" required>
+  A valid 6-character setup code from the dashboard.
+</ParamField>
+
+<ParamField body="agent_name" type="string">
+  Human-readable name. Defaults to hostname.
+</ParamField>
+
+## Response
+
+```json
+{
+  "agent_id": "uuid",
+  "fleet_id": "uuid",
+  "bootstrap_token": "bt_...",
+  "created_at": "2026-03-28T07:00:00Z"
+}
+```
+
+<Note>
+  The `bootstrap_token` is only returned once. The CLI stores it automatically.
+</Note>

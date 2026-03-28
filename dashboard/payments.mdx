@@ -1,0 +1,66 @@
+---
+title: "Payments"
+description: "Agent wallets, USDC transactions, and budget controls."
+tag: "PRO"
+---
+
+## Overview
+
+CelerFlow lets you give agents their own wallets for paying MCP services that charge via the **x402 / MPP** protocol (HTTP 402 responses). When an agent encounters a paid API, CelerFlow checks the budget, signs the transaction, and pays in USDC on Base.
+
+<Note>
+  Agent Payments is part of the Phase 4c roadmap and may not be available yet. This page describes the target design.
+</Note>
+
+## How it works
+
+1. An agent calls a tool via MCP.
+2. The target MCP server responds with HTTP 402 (payment required).
+3. CelerFlow's plugin or gateway intercepts the 402.
+4. Budget is checked against the agent's wallet policy (single-tx limit, daily limit, recipient allowlist).
+5. If within budget, CelerFlow signs the USDC transaction on Base.
+6. The payment is included in the retry request. The tool call completes.
+
+## Wallet management
+
+From the dashboard **Payments** page:
+
+- **Create a wallet** for an agent.
+- **Deposit USDC** to the wallet.
+- **View balance** and transaction history.
+- **Set budget rules**: per-transaction limit, daily limit, monthly limit, recipient allowlist, HITL threshold.
+
+## Budget controls
+
+| Control | Description |
+|---|---|
+| Single-tx limit | Max USDC per transaction. |
+| Daily limit | Cumulative max per day. |
+| Monthly limit | Cumulative max per month. |
+| Recipient allowlist | Only pay approved addresses. |
+| HITL threshold | Transactions above this amount require human approval. |
+
+<Warning>
+  Budget limits are **hard limits**. Exceeding = 100% rejected, not a warning.
+</Warning>
+
+## Paid MCP endpoints
+
+You can also make your own agents **accept payments** from other agents:
+
+1. In agent settings, enable **Paid MCP Access**.
+2. Set a price per call (e.g., $0.01).
+3. CelerFlow generates a paid MCP endpoint: `https://gateway.celerflow.ai/mcp/paid/agent_xxx`.
+4. Other agents calling this endpoint receive HTTP 402 → pay USDC → get results.
+
+CelerFlow charges a **1% transaction fee** (capped at $1 per transaction).
+
+## Technical details
+
+| Layer | Choice |
+|---|---|
+| Payment protocol | x402 + MPP (both HTTP 402-based) |
+| Wallet implementation | Coinbase CDP AgentKit (migrating to OWS when stable) |
+| Settlement chain | Base |
+| Settlement currency | USDC |
+| Custody | Non-custodial (user holds private keys) |

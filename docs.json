@@ -28,19 +28,29 @@
             "group": "Core concepts",
             "pages": [
               "concepts/agents",
-              "concepts/fleets",
-              "concepts/policies",
-              "concepts/traces",
+              "concepts/workspaces",
+              "concepts/tracing",
+              "concepts/service-permissions",
+              "concepts/human-approval",
+              "concepts/agent-score",
               "concepts/health-checks"
             ]
           },
           {
-            "group": "Guides",
+            "group": "Integration",
             "pages": [
-              "guides/cli-setup",
-              "guides/connect-agent",
-              "guides/mcp-proxy",
-              "guides/dashboard"
+              "integration/openclaw-plugin",
+              "integration/mcp-gateway",
+              "integration/cli"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "pages": [
+              "dashboard/workspace-overview",
+              "dashboard/agents",
+              "dashboard/tracing",
+              "dashboard/payments"
             ]
           },
           {
@@ -64,37 +74,40 @@
             ]
           },
           {
-            "group": "Fleet management",
+            "group": "Agent",
             "pages": [
-              "api-reference/fleet/create-fleet",
-              "api-reference/fleet/list-fleets",
-              "api-reference/fleet/get-fleet",
-              "api-reference/fleet/delete-fleet"
+              "api-reference/agent/register",
+              "api-reference/agent/health",
+              "api-reference/agent/terminate",
+              "api-reference/agent/disconnect",
+              "api-reference/agent/remove",
+              "api-reference/agent/policies",
+              "api-reference/agent/confirmations"
             ]
           },
           {
-            "group": "Agent operations",
+            "group": "Fleet",
             "pages": [
-              "api-reference/agent/register-agent",
-              "api-reference/agent/report-health",
-              "api-reference/agent/get-health-checks",
-              "api-reference/agent/disconnect-agent",
-              "api-reference/agent/remove-agent"
+              "api-reference/fleet/create",
+              "api-reference/fleet/list",
+              "api-reference/fleet/get",
+              "api-reference/fleet/delete"
             ]
           },
           {
-            "group": "Authentication",
+            "group": "Trace",
+            "pages": [
+              "api-reference/trace/ingest",
+              "api-reference/trace/query"
+            ]
+          },
+          {
+            "group": "Auth",
             "pages": [
               "api-reference/auth/device-code",
               "api-reference/auth/device-token",
               "api-reference/auth/setup-code",
               "api-reference/auth/rotate-token"
-            ]
-          },
-          {
-            "group": "Billing",
-            "pages": [
-              "api-reference/billing/usage"
             ]
           }
         ]

@@ -1,0 +1,100 @@
+---
+title: "Tracing"
+description: "Every tool call is recorded, classified, and grouped by task for easy browsing."
+---
+
+## Overview
+
+CelerFlow records every tool call an agent makes as a **trace span**. Traces are the foundation of the platform — they power the dashboard, agent scores, risk alerts, and permission auto-discovery.
+
+## Trace classification
+
+Each trace is automatically classified into one of four categories:
+
+| Category | Examples | Default display | Highlight |
+|---|---|---|---|
+| **Outbound write** | `gmail_send`, `notion_create`, `slack_post` | ✅ Shown | 🔴 Red |
+| **Outbound read** | `gmail_read`, `web_fetch`, `web_search` | ✅ Shown | — |
+| **Local write** | `write`, `edit`, `exec` | ✅ Shown | — |
+| **Local read** | `read`, `memory_search` | ❌ Hidden by default | — |
+
+Users can toggle "Show all" to include local reads.
+
+## Service detection
+
+Traces are automatically mapped to a **service** based on tool name patterns:
+
+| Service | Tool patterns | Category |
+|---|---|---|
+| Gmail | `gmail_*` | External |
+| Notion | `notion_*` | External |
+| Slack | `slack_*` | External |
+| GitHub | `gh_*`, `github_*` | External |
+| Google Docs | `gdocs_*`, `google_docs_*` | External |
+| Web | `web_*` | External |
+| System Tools | `read`, `write`, `edit`, `exec`, `browser`, `memory_*` | System |
+
+Custom service definitions can be added from the dashboard.
+
+## Span structure
+
+Each tool call produces two trace spans:
+
+1. **Before span** — recorded when the tool call starts, captures intent (tool name, parameters, policy result).
+2. **After span** — recorded when the tool call completes, captures result (status, duration, summary).
+
+Both spans share a `span_id` to link them together.
+
+### Trace fields
+
+| Field | Description |
+|---|---|
+| `tool_name` | The tool that was called. |
+| `tool_args_summary` | Sanitized parameters (truncated to 200 chars, no secrets). |
+| `category` | `outbound_write`, `outbound_read`, `local_write`, or `local_read`. |
+| `service_name` | Detected service (gmail, notion, system...). |
+| `status` | `allowed`, `blocked`, `confirmed`, `denied`, or `error`. |
+| `result_summary` | One-line description of what happened. |
+| `duration_ms` | Execution time in milliseconds. |
+| `task_name` | Session or thread name for grouping. |
+| `task_group_id` | Groups related traces into a task. |
+
+## Task grouping
+
+Traces are grouped by task for easier browsing:
+
+- **OpenClaw agents** — grouped by session or conversation thread.
+- **MCP Gateway agents** — grouped by time window (tool calls within 5 minutes of each other).
+
+```
+Traces — Agent: product-manager
+┌─────────────────────────────────────────────────────────┐
+│ ▶ Task: "Write Phase 4 PRD"                    2h ago  │
+│   12 operations · 3 outbound · 0 blocked               │
+│                                                         │
+│ ▼ Task: "Research MCP gateways"                4h ago  │
+│   ├── 🔍 web_search "MCP gateway comparison"           │
+│   ├── 🔍 web_fetch  composio.dev/...                   │
+│   ├── 🔴 gmail_send → team@celerflow.ai                │
+│   └── 📝 write shared/phase4/research.md                │
+└─────────────────────────────────────────────────────────┘
+```
+
+## Filtering
+
+| Dimension | Values |
+|---|---|
+| Category | Outbound write / Outbound read / Local write / Local read |
+| Service | Gmail / Notion / Slack / GitHub / System / ... |
+| Status | Allowed / Blocked / Confirmed / Denied / Error |
+| Time range | Custom date picker |
+| Task name | Text search |
+
+## Retention
+
+| Plan | Retention |
+|---|---|
+| Free | 3 days |
+| Pro | 30 days |
+| Team | 90 days |
+| Enterprise | Up to 365 days |

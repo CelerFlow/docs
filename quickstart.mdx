@@ -1,86 +1,96 @@
 ---
 title: "Quickstart"
-description: "Set up your first fleet and connect an agent in under 5 minutes."
+description: "Connect your first agent and see traces in under 5 minutes."
 ---
 
 <Info>
-  **Prerequisites**: A CelerFlow account. Sign up at [celerflow.vercel.app](https://celerflow.vercel.app).
+  **Prerequisites**: A CelerFlow account ([celerflow.vercel.app](https://celerflow.vercel.app)) and Node.js v18+.
 </Info>
 
-## Create your first fleet
+## Connect an OpenClaw agent
 
 <Steps>
-  <Step title="Sign in">
-    Go to [celerflow.vercel.app](https://celerflow.vercel.app) and sign in with Google.
-  </Step>
-
-  <Step title="Create a fleet">
-    From the dashboard, click **New fleet**. Give it a name like "Production" or "Dev agents".
-
-    A fleet is a logical group of agents. Use it to organize agents by project, team, or environment.
-  </Step>
-
   <Step title="Install the CLI">
-    Install `ocauthz` globally:
-
     ```bash
-    npm install -g ocauthz
-    ```
-
-    Verify the installation:
-
-    ```bash
-    ocauthz --version
+    npm install -g celerflow
     ```
   </Step>
 
-  <Step title="Log in via CLI">
-    Authenticate with your CelerFlow account:
-
+  <Step title="Log in">
     ```bash
-    ocauthz login
+    celerflow login
     ```
 
-    This opens your browser for Google OAuth. After authenticating, your credentials are saved locally to `~/.ocauthz/credentials.json`.
+    Your browser opens for Google OAuth. After signing in, credentials are saved to `~/.celerflow/credentials.json`.
   </Step>
 
-  <Step title="Connect an agent">
-    Generate a setup code from the dashboard for your fleet, then connect:
-
-    ```bash
-    ocauthz connect --code <SETUP_CODE>
-    ```
-
-    Your agent is now registered and will begin reporting health to CelerFlow.
+  <Step title="Create a workspace">
+    From the dashboard, click **New workspace**. Give it a name like "Production" or "Dev agents".
   </Step>
 
-  <Step title="Verify the connection">
-    Check agent status from the CLI:
+  <Step title="Generate a setup code">
+    In the workspace view, click **Add agent**. Copy the 6-character setup code (valid for 15 minutes).
+  </Step>
 
+  <Step title="Connect">
     ```bash
-    ocauthz status
+    celerflow connect --code ABC123
     ```
 
-    Or visit the dashboard to see your agent appear in the fleet view with a green health indicator.
+    The CLI registers the agent, receives a bootstrap token, and saves configuration to `~/.celerflow/agent.json`.
+  </Step>
+
+  <Step title="Verify">
+    ```bash
+    celerflow status
+    ```
+
+    You should see your agent ID, workspace name, and `connected` status. In the dashboard, your agent appears with a green health indicator.
   </Step>
 </Steps>
 
-## What's next?
+## Connect a non-OpenClaw agent (MCP Gateway)
+
+If you're using LangGraph, CrewAI, OpenAI Agents SDK, or any MCP-compatible framework:
+
+<Steps>
+  <Step title="Create an API key">
+    Go to **Settings → API Keys** in the dashboard and create a key.
+  </Step>
+
+  <Step title="Point your agent to the gateway">
+    ```bash
+    MCP_SERVER_URL=https://gateway.celerflow.ai/mcp
+    # Header: Authorization: Bearer cf_key_xxx
+    ```
+
+    The gateway federates all your registered MCP servers behind a single endpoint with policy checks and tracing.
+  </Step>
+</Steps>
+
+## What happens next
+
+Once connected, CelerFlow automatically:
+
+- Records every tool call as a **trace** (categorized by service and operation type)
+- Calculates an **agent score** (0–100) updated hourly
+- Detects **risk alerts** (token spikes, high block rates, latency anomalies)
+- Applies **service permissions** you configure from the dashboard
 
 <CardGroup cols={2}>
-  <Card title="Understand agents" icon="robot" href="/concepts/agents">
-    Learn how agents are registered, monitored, and managed.
+  <Card title="Understand tracing" icon="timeline" href="/concepts/tracing">
+    How traces are classified and grouped.
   </Card>
 
-  <Card title="Set up policies" icon="shield-check" href="/concepts/policies">
-    Control what tools your agents can access.
+  <Card title="Set permissions" icon="shield-check" href="/concepts/service-permissions">
+    Control what services each agent can read and write.
   </Card>
 
-  <Card title="Use the MCP proxy" icon="route" href="/guides/mcp-proxy">
-    Connect agents from any framework without installing a plugin.
+  <Card title="Use the dashboard" icon="layout-dashboard" href="/dashboard/workspace-overview">
+    Navigate the workspace overview.
   </Card>
 
-  <Card title="Explore the API" icon="code" href="/api-reference/introduction">
-    Automate fleet and agent management programmatically.
+  <Card title="CLI reference" icon="terminal" href="/integration/cli">
+    Full command reference for the `celerflow` CLI.
   </Card>
 </CardGroup>

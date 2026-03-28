@@ -1,0 +1,59 @@
+---
+title: "Agent score"
+description: "A 0–100 health score for every agent, calculated hourly."
+---
+
+## Overview
+
+Every connected agent gets a **health score** from 0 to 100, recalculated hourly by a `pg_cron` job. The score is a weighted composite of five components.
+
+## Score breakdown
+
+| Component | Weight | What it measures | How it scores |
+|---|---|---|---|
+| **Uptime** | 30 pts | Last health check recency | 30 if < 24h and healthy, 15 if < 7d, 0 otherwise |
+| **Success rate** | 25 pts | Tool call success/error ratio (24h) | Proportional to success percentage |
+| **Block rate** | 20 pts | Percentage of blocked tool calls (24h) | Lower block rate = higher score |
+| **Response time** | 15 pts | Average tool call duration (24h) | 15 if < 500ms, 10 if < 2s, 5 if < 5s, 0 otherwise |
+| **Config** | 10 pts | Has active traces | 5 if agent has any traces in 24h |
+
+## Grades
+
+| Grade | Score range |
+|---|---|
+| **A** | 90–100 |
+| **B** | 75–89 |
+| **C** | 60–74 |
+| **D** | 40–59 |
+| **F** | 0–39 |
+
+## Trend tracking
+
+Score snapshots are recorded hourly to the `agent_score_history` table. The dashboard shows score trends over 7 and 30 days.
+
+```
+Health Score — Last 30 Days
+100 ┤
+ 90 ┤    ╭──╮          ╭───────────
+ 80 ┤───╯  ╰──────╮   ╯
+ 70 ┤              ╰──╯
+ 60 ┤
+    └──────────────────────────────
+    Mar 1                    Mar 27
+```
+
+## Additional stats
+
+The agent score view also surfaces:
+
+| Stat | Description |
+|---|---|
+| `tool_call_count_24h` | Total tool calls in the last 24 hours. |
+| `tool_call_count_7d` | Total tool calls in the last 7 days. |
+| `top_tools` | Top 5 most-used tools (24h). |
+| `avg_duration_ms` | Average tool call duration (24h). |
+| `blocked_count_24h` | Number of blocked calls (24h). |
+
+## Score history retention
+
+Score history is kept for **90 days**, then automatically cleaned up.

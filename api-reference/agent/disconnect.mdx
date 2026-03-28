@@ -1,0 +1,27 @@
+---
+title: "Disconnect agent"
+description: "Gracefully disconnect an agent from its workspace."
+api: "POST /agent"
+---
+
+## Request
+
+```json
+{
+  "action": "disconnect",
+  "agent_id": "uuid"
+}
+```
+
+## Response
+
+```json
+{
+  "success": true,
+  "status": "disconnected"
+}
+```
+
+<Note>
+  Historical data (traces, health checks, scores) is preserved. Use [remove](/api-reference/agent/remove) for permanent deletion.
+</Note>

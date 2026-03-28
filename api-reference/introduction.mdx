@@ -5,30 +5,43 @@ description: "Overview of the CelerFlow REST API."
 
 ## Base URL
 
-All API requests are made to:
-
 ```
 https://ristessocgeoiifdbukq.supabase.co/functions/v1/
 ```
 
+## Edge Function routing
+
+CelerFlow uses **consolidated Edge Functions** with sub-routes. Each function handles multiple related operations:
+
+| Function | Routes |
+|---|---|
+| `/agent` | Register, health, terminate, disconnect, remove, policies, confirmations |
+| `/fleet` | Create, list, get, delete |
+| `/trace` | Ingest spans, query traces |
+| `/cli` | Device code, device token |
+| `/team` | Create, invite, list members, remove member |
+| `/audit` | Create export, list exports, download |
+| `/stripe` | Webhook handler |
+| `/api-key` | Create, list, revoke |
+| `/risk` | Query risk alerts, resolve alerts |
+| `/mcp` | Gateway proxy (deployed separately on Railway) |
+
 ## Authentication
 
-Most endpoints require a Bearer token in the `Authorization` header:
+Most endpoints require a Bearer token:
 
 ```
 Authorization: Bearer YOUR_TOKEN
 ```
 
-There are two types of tokens:
+Two token types:
 
-- **User token** — obtained via the device code OAuth flow. Used for fleet management and dashboard operations.
-- **Bootstrap token** — assigned to an agent on connection. Used for health reporting and agent-specific operations.
-
-See [Authentication](/api-reference/authentication) for details on obtaining tokens.
+- **User token** — from the device code OAuth flow. Used for dashboard and fleet operations.
+- **Bootstrap token** — assigned to an agent on connection. Used for health reporting, trace ingestion, and agent-specific operations.
 
 ## Response format
 
-All responses return JSON. Successful responses include the data directly:
+Success:
 
 ```json
 {
@@ -38,12 +51,15 @@ All responses return JSON. Successful responses include the data directly:
 }
 ```
 
-Error responses include a message:
+Error:
 
 ```json
 {
-  "error": "Fleet not found",
-  "status": 404
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Fleet not found",
+    "status": 404
+  }
 }
 ```
 
@@ -62,11 +78,11 @@ Rate-limited requests return HTTP 429 with a `Retry-After` header.
 
 | Code | Meaning |
 |---|---|
-| `200` | Success. |
-| `201` | Resource created. |
-| `400` | Bad request — check your parameters. |
-| `401` | Unauthorized — invalid or missing token. |
-| `403` | Forbidden — insufficient permissions. |
-| `404` | Resource not found. |
-| `429` | Rate limited — retry after the indicated delay. |
-| `500` | Server error — contact support if persistent. |
+| `200` | Success |
+| `201` | Created |
+| `400` | Bad request |
+| `401` | Unauthorized |
+| `403` | Forbidden |
+| `404` | Not found |
+| `429` | Rate limited |
+| `500` | Server error |

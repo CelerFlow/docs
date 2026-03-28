@@ -1,0 +1,69 @@
+---
+title: "Confirmations (HITL)"
+description: "Create and manage human-in-the-loop approval requests."
+api: "POST /agent"
+---
+
+## Create confirmation request
+
+Called by the plugin/gateway when a tool call requires human approval.
+
+```json
+{
+  "action": "create-confirmation",
+  "agent_id": "uuid",
+  "tool_name": "gmail_send",
+  "service_name": "gmail",
+  "tool_args_summary": "to: team@celerflow.ai, subject: ...",
+  "action_description": "Send email to team@celerflow.ai"
+}
+```
+
+### Response
+
+```json
+{
+  "id": "uuid",
+  "status": "pending",
+  "expires_at": "2026-03-28T07:05:00Z"
+}
+```
+
+## Respond to confirmation
+
+```json
+{
+  "action": "respond-confirmation",
+  "confirmation_id": "uuid",
+  "decision": "approved"
+}
+```
+
+<ParamField body="decision" type="string" required>
+  One of: `approved`, `denied`.
+</ParamField>
+
+### Response
+
+```json
+{
+  "id": "uuid",
+  "status": "approved",
+  "decided_at": "2026-03-28T07:01:30Z"
+}
+```
+
+## Poll confirmation status
+
+The plugin polls this to check whether the human has responded:
+
+```json
+{
+  "action": "get-confirmation",
+  "confirmation_id": "uuid"
+}
+```
+
+<Note>
+  Confirmations expire after 5 minutes. Expired requests are treated as denied.
+</Note>

@@ -1,18 +1,17 @@
 ---
-title: "Rotate token"
+title: "Rotate bootstrap token"
 description: "Rotate an agent's bootstrap token."
-api: "POST /rotate-token"
+api: "POST /agent"
 ---
 
 ## Request
 
 Authenticated with the agent's current bootstrap token.
 
-### Example
-
-```bash
-curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/rotate-token \
-  -H "Authorization: Bearer CURRENT_BOOTSTRAP_TOKEN"
+```json
+{
+  "action": "rotate-token"
+}
 ```
 
 ## Response
@@ -29,5 +28,5 @@ curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/rotate-token 
 </Warning>
 
 <Tip>
-  The `ocauthz` CLI handles token rotation automatically. You only need this endpoint if you're integrating directly via the API.
+  The CelerFlow plugin handles token rotation automatically. You only need this if integrating directly via the API.
 </Tip>

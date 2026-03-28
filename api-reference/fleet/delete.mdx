@@ -1,0 +1,27 @@
+---
+title: "Delete workspace"
+description: "Delete a workspace and disconnect all its agents."
+api: "DELETE /fleet"
+---
+
+## Request
+
+```json
+{
+  "action": "delete",
+  "fleet_id": "uuid"
+}
+```
+
+## Response
+
+```json
+{
+  "success": true,
+  "deleted_agents": 5
+}
+```
+
+<Warning>
+  Permanently deletes the workspace and disconnects all agents within it. Historical traces are retained per your plan's retention policy.
+</Warning>

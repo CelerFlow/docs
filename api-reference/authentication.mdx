@@ -3,55 +3,51 @@ title: "Authentication"
 description: "How to obtain and use tokens for the CelerFlow API."
 ---
 
-## Overview
-
-CelerFlow uses two authentication flows:
-
-1. **Device code flow** — for CLI and human users.
-2. **Bootstrap tokens** — for connected agents.
-
 ## Device code flow
 
-Used by the `ocauthz login` CLI command and any client that needs user authentication.
+Used by the `celerflow login` CLI command.
 
 <Steps>
   <Step title="Request a device code">
-    ```bash
-    POST /cli-device-code
     ```
-
-    Returns a `device_code`, `user_code`, and `verification_url`.
+    POST /cli
+    { "action": "device-code" }
+    ```
+    Returns `device_code`, `user_code`, and `verification_url`.
   </Step>
 
   <Step title="User authorizes">
-    Direct the user to `verification_url` to sign in with Google and enter the `user_code`.
+    User visits `verification_url`, signs in with Google, enters the code.
   </Step>
 
-  <Step title="Poll for the token">
-    ```bash
-    POST /cli-device-token
-    Content-Type: application/json
-
-    { "device_code": "abc123" }
+  <Step title="Poll for token">
     ```
-
-    Poll this endpoint until the user authorizes. Returns a user access token on success.
+    POST /cli
+    { "action": "device-token", "device_code": "abc123" }
+    ```
+    Poll until the user authorizes. Returns a user access token on success.
   </Step>
 </Steps>
 
 ## Bootstrap tokens
 
-Agents receive a bootstrap token when they connect to a fleet via `ocauthz connect`. This token:
+Agents receive a bootstrap token on connection via `celerflow connect`. This token:
 
-- Authenticates health reports and agent API calls.
-- Rotates automatically — call [rotate token](/api-reference/auth/rotate-token) to get a new one.
-- Is scoped to a single agent and fleet.
+- Authenticates health reports, trace ingestion, and policy queries.
+- Rotates automatically — the plugin handles this.
+- Is scoped to a single agent and workspace.
+
+## API keys
+
+For the MCP Gateway, create API keys from **Settings → API Keys**:
+
+- Keys are prefixed with `cf_` for identification.
+- Keys can be scoped to a specific agent or team.
+- Revoke keys instantly from the dashboard.
 
 ## Using tokens
 
-Include the token in the `Authorization` header:
-
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-  https://ristessocgeoiifdbukq.supabase.co/functions/v1/list-fleets
+  https://ristessocgeoiifdbukq.supabase.co/functions/v1/fleet
 ```

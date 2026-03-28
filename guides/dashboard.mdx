@@ -1,0 +1,52 @@
+---
+title: "Dashboard"
+description: "Navigate the Celerflow dashboard to monitor and manage your agents."
+---
+
+## Overview
+
+The Celerflow dashboard is your central hub for managing fleets, monitoring agents, reviewing traces, and configuring policies.
+
+## Dashboard sections
+
+### Fleet overview
+
+The default view shows all your fleets with:
+
+- Fleet name and agent count
+- Aggregated health status (healthy / stale / disconnected)
+- Recent activity summary
+
+Click a fleet to drill into its agents.
+
+### Agent detail
+
+Each agent page shows:
+
+- **Status** — current health state with last check-in time.
+- **Traces** — recent tool calls with status, duration, and policy result.
+- **Health history** — timeline of health reports.
+- **Configuration** — agent ID, fleet assignment, and bootstrap token status.
+
+### Traces
+
+The global traces view lets you search and filter across all agents:
+
+- Filter by agent, tool name, status, or time range.
+- Click a trace to see full details including parameters and result.
+- Export traces as CSV or JSON (Team plan and above).
+
+### Settings
+
+Manage your account, billing, team members, API keys, and MCP proxy configuration.
+
+## Keyboard shortcuts
+
+| Shortcut | Action |
+|---|---|
+| `⌘ K` / `Ctrl K` | Open search |
+| `⌘ /` / `Ctrl /` | Toggle sidebar |
+
+<Tip>
+  Use the search bar to quickly jump to any agent, fleet, or trace by name or ID.
+</Tip>

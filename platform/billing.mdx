@@ -1,0 +1,50 @@
+---
+title: "Billing & plans"
+description: "Plan tiers, pricing, and subscription management."
+---
+
+## Plans
+
+| | **Free** | **Pro $19/mo** | **Team $49/mo** | **Enterprise** |
+|---|---|---|---|---|
+| Agents | 3 | 20 | 100 | Unlimited |
+| Team members | 1 | 1 | 10 | Unlimited |
+| Trace retention | 3 days | 30 days | 90 days | Custom |
+| HITL confirmations | ❌ | ✅ | ✅ | ✅ |
+| MCP proxy | ❌ | ✅ | ✅ | ✅ |
+| Read/write permissions | ❌ | ✅ | ✅ | ✅ |
+| Audit log export | ❌ | ❌ | ✅ | ✅ |
+| RBAC | ❌ | ❌ | ✅ | ✅ |
+
+Annual billing: **20% off** (Pro $15/mo, Team $39/mo).
+
+## Upgrading
+
+1. Go to **Settings → Billing**.
+2. Select a plan and billing interval.
+3. Complete payment via Stripe Checkout.
+4. Your plan upgrades immediately — new limits take effect on next page load.
+
+## Pro trial
+
+Pro plan includes a **14-day free trial** (first subscription only, no credit card required for trial period).
+
+## Managing your subscription
+
+Click **Manage subscription** in Settings → Billing to:
+
+- Change your plan (upgrade/downgrade)
+- Update payment method
+- Cancel subscription
+- View invoices
+
+All subscription management goes through Stripe's Customer Portal.
+
+## Downgrade behavior
+
+When you downgrade or cancel:
+
+- Access continues until the end of your billing period.
+- Trace data beyond the new retention limit is cleaned up by the nightly cron.
+- Agents beyond the new limit are **not** disconnected — you just can't add new ones.
+- Team features (RBAC, audit export) become read-only.

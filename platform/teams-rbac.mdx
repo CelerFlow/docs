@@ -1,0 +1,51 @@
+---
+title: "Teams & RBAC"
+description: "Invite team members and manage permissions with role-based access control."
+tag: "TEAM"
+---
+
+## Overview
+
+Teams let multiple users share access to fleets, agents, traces, and policies with role-based permissions.
+
+## Roles
+
+| Role | View dashboard | View traces | Terminate agent | Edit policies | Manage members | Billing |
+|---|---|---|---|---|---|---|
+| **Owner** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Admin** | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **Operator** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Viewer** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+
+## Creating a team
+
+1. Go to **Settings → Team**.
+2. Enter a team name and click **Create team**.
+3. You become the Owner automatically.
+
+## Inviting members
+
+1. In the Team page, enter the member's email and select a role.
+2. Click **Invite**.
+3. The invited user will see the team in their Settings → Team page.
+4. They click **Accept** to join.
+
+<Note>
+  The invited user must have an existing Celerflow account.
+</Note>
+
+## Sharing fleets with a team
+
+Assign a fleet to a team by updating the fleet's `team_id`. Team members can then see all agents and traces in that fleet, subject to their role permissions.
+
+## Switching teams
+
+If you belong to multiple teams, use the team selector in Settings → Team to switch context. Your personal workspace is always accessible.
+
+## Removing members
+
+Owners and Admins can remove members from the Team page. Removing a member revokes their access immediately.
+
+<Note>
+  The Owner cannot be removed. To transfer ownership, contact support.
+</Note>

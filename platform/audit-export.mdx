@@ -1,0 +1,58 @@
+---
+title: "Audit export"
+description: "Export agent tool call history for compliance, debugging, and analysis."
+tag: "TEAM"
+---
+
+## Overview
+
+Export your agent's tool call history as CSV or JSON for compliance auditing, incident investigation, or external analysis.
+
+## Creating an export
+
+1. Go to **Settings → Audit Logs**.
+2. Select a date range.
+3. Choose format: **JSON** or **CSV**.
+4. Click **Export**.
+
+The export runs immediately. For large datasets (10k+ rows), it may take a few seconds.
+
+## Export fields
+
+| Field | Description |
+|---|---|
+| `timestamp` | When the tool call started (ISO 8601). |
+| `completed_at` | When it completed. |
+| `agent_id` | Agent UUID. |
+| `agent_name` | Human-readable agent name. |
+| `tool_name` | Tool that was called (e.g., `exec`, `gmail`, `write`). |
+| `params_summary` | Sanitized parameters (truncated, no secrets). |
+| `exec_status` | `success`, `error`, or `blocked`. |
+| `policy_result` | `allowed`, `blocked`, or `confirm_required`. |
+| `summary` | One-line description of what happened. |
+| `duration_ms` | Execution time in milliseconds. |
+
+## Downloading
+
+Completed exports show a **Download** link. Links are signed URLs valid for 1 hour.
+
+## Export history
+
+All exports are listed with their status, row count, and creation date. You can re-download past exports from the history list.
+
+## Data retention
+
+Exports follow your plan's trace retention policy:
+
+- **Team:** 90 days of trace data available for export.
+- **Enterprise:** Custom retention (up to 365 days).
+
+Traces older than your retention period are automatically deleted and cannot be exported.
+
+## Rate limits
+
+Maximum **5 exports per hour** per user to prevent abuse.
+
+## Compliance notes
+
+The export format is designed to be compatible with common SIEM import tools. The field structure aligns with SOC 2 Type II audit requirements for agent activity logging.

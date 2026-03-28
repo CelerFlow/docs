@@ -1,0 +1,33 @@
+---
+title: "Rotate token"
+description: "Rotate an agent's bootstrap token."
+api: "POST /rotate-token"
+---
+
+## Request
+
+Authenticated with the agent's current bootstrap token.
+
+### Example
+
+```bash
+curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/rotate-token \
+  -H "Authorization: Bearer CURRENT_BOOTSTRAP_TOKEN"
+```
+
+## Response
+
+```json
+{
+  "bootstrap_token": "bt_new...",
+  "expires_at": "2026-06-28T07:00:00Z"
+}
+```
+
+<Warning>
+  The previous token is invalidated immediately. Store the new token before making further API calls.
+</Warning>
+
+<Tip>
+  The `ocauthz` CLI handles token rotation automatically. You only need this endpoint if you're integrating directly via the API.
+</Tip>

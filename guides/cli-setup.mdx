@@ -1,0 +1,76 @@
+---
+title: "CLI setup"
+description: "Install the ocauthz CLI and authenticate with your Celerflow account."
+---
+
+<Info>
+  **Prerequisites**: Node.js v18 or higher.
+</Info>
+
+## Install
+
+<CodeGroup>
+  ```bash npm
+  npm install -g ocauthz
+  ```
+
+  ```bash pnpm
+  pnpm add -g ocauthz
+  ```
+</CodeGroup>
+
+Verify the installation:
+
+```bash
+ocauthz --version
+```
+
+## Authenticate
+
+```bash
+ocauthz login
+```
+
+This starts a device code flow:
+
+1. A URL and code are displayed in the terminal.
+2. Your browser opens to the Celerflow auth page.
+3. Sign in with Google and confirm the code.
+4. The CLI receives your token and saves it to `~/.ocauthz/credentials.json`.
+
+<Tip>
+  Credentials persist across sessions. You only need to log in once per machine.
+</Tip>
+
+## CLI commands
+
+| Command | Description |
+|---|---|
+| `ocauthz login` | Authenticate with your Celerflow account. |
+| `ocauthz connect --code <CODE>` | Connect the local agent to a fleet using a setup code. |
+| `ocauthz status` | Show connection status, last health check, and token info. |
+| `ocauthz doctor` | Run diagnostics and report any configuration issues. |
+| `ocauthz disconnect` | Gracefully disconnect the agent from its fleet. |
+| `ocauthz remove` | Permanently remove the agent and delete its data. |
+
+## Diagnostics
+
+If something isn't working, run:
+
+```bash
+ocauthz doctor
+```
+
+This checks:
+
+- Authentication status
+- Network connectivity to the Celerflow API
+- Bootstrap token validity
+- Agent registration status
+
+## Uninstall
+
+```bash
+npm uninstall -g ocauthz
+rm -rf ~/.ocauthz
+```

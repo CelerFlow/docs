@@ -1,0 +1,35 @@
+---
+title: "Report health"
+description: "Submit a health check report for a connected agent."
+api: "POST /report-health"
+---
+
+## Request
+
+Authenticated with the agent's bootstrap token.
+
+<ParamField body="status" type="string" required>
+  Agent status. One of: `healthy`, `degraded`.
+</ParamField>
+
+<ParamField body="uptime" type="number">
+  Agent uptime in seconds.
+</ParamField>
+
+### Example
+
+```bash
+curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/report-health \
+  -H "Authorization: Bearer BOOTSTRAP_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"status": "healthy", "uptime": 86400}'
+```
+
+## Response
+
+```json
+{
+  "recorded": true,
+  "timestamp": "2026-03-28T07:00:00Z"
+}
+```

@@ -1,97 +1,74 @@
 ---
 title: "Introduction"
-description: "Welcome to the new home for your documentation"
+description: "Celerflow is a control plane for AI agents — monitor, secure, and manage your agents across any framework from a single dashboard."
 ---
 
-## Setting up
+## What is Celerflow?
 
-Get your documentation site up and running in minutes.
+Celerflow gives teams **visibility and control** over their AI agents in production. Whether you're running agents built with OpenClaw, CrewAI, LangGraph, or any MCP-compatible framework, Celerflow provides a unified control plane for monitoring health, enforcing policies, and auditing tool usage.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
+Think of it as the **ops layer** your AI agents are missing.
+
+<CardGroup cols={2}>
+  <Card title="Fleet management" icon="server">
+    Organize agents into fleets. Monitor status, health, and uptime from one dashboard.
+  </Card>
+
+  <Card title="Policy enforcement" icon="shield-check">
+    Define what tools agents can use, when they need human approval, and what's blocked entirely.
+  </Card>
+
+  <Card title="Trace & audit" icon="timeline">
+    Every tool call is logged with parameters, results, and timing. Export for compliance or debugging.
+  </Card>
+
+  <Card title="MCP proxy" icon="route">
+    Connect any MCP-compatible agent to Celerflow for policy checks and tracing — no plugin required.
+  </Card>
+</CardGroup>
+
+## How it works
+
+<Steps>
+  <Step title="Create a fleet">
+    Sign in to Celerflow and create a fleet to group your agents by project, team, or environment.
+  </Step>
+
+  <Step title="Connect your agents">
+    Use the `ocauthz` CLI to authenticate and connect agents to your fleet. Each agent gets a bootstrap token for secure communication.
+  </Step>
+
+  <Step title="Set policies">
+    Configure tool-level permissions: allow, block, or require human-in-the-loop confirmation for specific tools.
+  </Step>
+
+  <Step title="Monitor and audit">
+    Watch agent health in real time. Review traces, analyze tool usage patterns, and export audit logs when needed.
+  </Step>
+</Steps>
+
+## Get started
+
+<Card title="Quickstart" icon="rocket" href="/quickstart" horizontal>
+  Set up your first fleet and connect an agent in under 5 minutes.
 </Card>
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
+## Explore
 
 <Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+  <Card title="Core concepts" icon="book" href="/concepts/agents">
+    Understand agents, fleets, policies, and traces.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+
+  <Card title="CLI setup" icon="terminal" href="/guides/cli-setup">
+    Install the CLI and authenticate.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+
+  <Card title="MCP proxy" icon="route" href="/guides/mcp-proxy">
+    Connect any MCP-compatible framework without a plugin.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+
+  <Card title="API reference" icon="code" href="/api-reference/introduction">
+    Full REST API documentation for programmatic access.
   </Card>
 </Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>

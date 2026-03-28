@@ -1,0 +1,112 @@
+---
+title: "MCP proxy"
+description: "Connect any MCP-compatible agent framework to Celerflow for policy enforcement and tracing."
+tag: "PRO"
+---
+
+## Overview
+
+The MCP proxy lets you connect **any MCP-compatible agent framework** (CrewAI, LangGraph, Claude Agent SDK, OpenAI Agents SDK, etc.) to Celerflow for policy enforcement and tracing — without installing a plugin.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Your agent] --> B[MCP Proxy]
+    B --> C{Policy check}
+    C -->|Allowed| D[Your MCP server]
+    C -->|Blocked| E[Reject]
+    D --> F[Record trace]
+    E --> F
+    F --> G[Return result]
+```
+
+The proxy intercepts MCP `tools/call` requests, applies your agent's policies, records traces, then forwards to the actual MCP server.
+
+## Setup
+
+<Steps>
+  <Step title="Create an API key">
+    Go to **Settings → MCP Proxy** in the dashboard and create an API key.
+
+    <Warning>
+      Copy the key immediately — it's only shown once.
+    </Warning>
+  </Step>
+
+  <Step title="Point your agent to the proxy">
+    Replace your MCP server URL with the Celerflow proxy URL:
+
+    ```bash
+    # Before
+    MCP_SERVER_URL=https://your-mcp-server.com
+
+    # After
+    MCP_SERVER_URL=https://proxy.celerflow.ai/v1/mcp?target=https://your-mcp-server.com
+    ```
+
+    Add the API key as a Bearer token:
+
+    ```
+    Authorization: Bearer cf_your_api_key_here
+    ```
+  </Step>
+</Steps>
+
+## Framework examples
+
+<Tabs>
+  <Tab title="CrewAI">
+    ```yaml
+    mcp_server_url: "https://proxy.celerflow.ai/v1/mcp?target=https://your-mcp-server.com"
+    headers:
+      Authorization: "Bearer cf_..."
+    ```
+  </Tab>
+
+  <Tab title="LangGraph">
+    ```python
+    mcp_config = {
+        "server_url": "https://proxy.celerflow.ai/v1/mcp?target=https://your-mcp-server.com",
+        "headers": {"Authorization": "Bearer cf_..."}
+    }
+    ```
+  </Tab>
+
+  <Tab title="Claude Agent SDK">
+    ```python
+    from claude_sdk import Agent
+
+    agent = Agent(
+        mcp_servers=[{
+            "url": "https://proxy.celerflow.ai/v1/mcp?target=https://your-mcp-server.com",
+            "headers": {"Authorization": "Bearer cf_..."}
+        }]
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## Limitations
+
+- Only intercepts **MCP protocol** tool calls. Built-in tools (e.g., Claude Code's `file_edit`) are not captured.
+- **HITL confirmations** are not supported via proxy. Use the OpenClaw plugin for async confirmation flows.
+- The agent framework must support custom MCP server URLs.
+
+## Rate limits
+
+| Plan | Requests/min |
+|---|---|
+| Pro | 100 |
+| Team | 500 |
+| Enterprise | 2,000 |
+
+Exceeding the limit returns HTTP 429 with a `Retry-After` header.
+
+## Latency
+
+The proxy adds **< 50ms P99** overhead. Policy checks use an in-memory cache (60s TTL), and trace writes are non-blocking.
+
+Response headers include:
+- `X-Celerflow-Proxy-Ms` — proxy overhead in milliseconds.
+- `X-Celerflow-Upstream-Ms` — upstream response time in milliseconds.

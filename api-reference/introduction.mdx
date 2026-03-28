@@ -1,33 +1,72 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API introduction"
+description: "Overview of the Celerflow REST API."
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+All API requests are made to:
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+```
+https://ristessocgeoiifdbukq.supabase.co/functions/v1/
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Most endpoints require a Bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer YOUR_TOKEN
+```
+
+There are two types of tokens:
+
+- **User token** — obtained via the device code OAuth flow. Used for fleet management and dashboard operations.
+- **Bootstrap token** — assigned to an agent on connection. Used for health reporting and agent-specific operations.
+
+See [Authentication](/api-reference/authentication) for details on obtaining tokens.
+
+## Response format
+
+All responses return JSON. Successful responses include the data directly:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "id": "fleet_abc123",
+  "name": "Production",
+  "created_at": "2026-01-15T10:30:00Z"
+}
 ```
+
+Error responses include a message:
+
+```json
+{
+  "error": "Fleet not found",
+  "status": 404
+}
+```
+
+## Rate limits
+
+| Plan | Requests/min |
+|---|---|
+| Free | 30 |
+| Pro | 100 |
+| Team | 500 |
+| Enterprise | 2,000 |
+
+Rate-limited requests return HTTP 429 with a `Retry-After` header.
+
+## Status codes
+
+| Code | Meaning |
+|---|---|
+| `200` | Success. |
+| `201` | Resource created. |
+| `400` | Bad request — check your parameters. |
+| `401` | Unauthorized — invalid or missing token. |
+| `403` | Forbidden — insufficient permissions. |
+| `404` | Resource not found. |
+| `429` | Rate limited — retry after the indicated delay. |
+| `500` | Server error — contact support if persistent. |

@@ -1,0 +1,39 @@
+---
+title: "Get health checks"
+description: "Retrieve health check history for an agent."
+api: "GET /get-health-checks"
+---
+
+## Request
+
+<ParamField query="agent_id" type="string" required>
+  The agent UUID.
+</ParamField>
+
+<ParamField query="limit" type="number">
+  Number of records to return. Default: 50. Max: 200.
+</ParamField>
+
+### Example
+
+```bash
+curl "https://ristessocgeoiifdbukq.supabase.co/functions/v1/get-health-checks?agent_id=agent_001&limit=10" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## Response
+
+```json
+[
+  {
+    "timestamp": "2026-03-28T07:00:00Z",
+    "status": "healthy",
+    "uptime": 86400
+  },
+  {
+    "timestamp": "2026-03-27T07:00:00Z",
+    "status": "healthy",
+    "uptime": 0
+  }
+]
+```

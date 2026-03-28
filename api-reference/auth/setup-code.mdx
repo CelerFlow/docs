@@ -1,0 +1,34 @@
+---
+title: "Generate setup code"
+description: "Generate a one-time setup code for connecting an agent to a fleet."
+api: "POST /generate-setup-code"
+---
+
+## Request
+
+<ParamField body="fleet_id" type="string" required>
+  The fleet UUID to generate a setup code for.
+</ParamField>
+
+### Example
+
+```bash
+curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/generate-setup-code \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"fleet_id": "fleet_abc123"}'
+```
+
+## Response
+
+```json
+{
+  "code": "ABC123",
+  "fleet_id": "fleet_abc123",
+  "expires_at": "2026-03-28T07:15:00Z"
+}
+```
+
+<Note>
+  Setup codes are single-use and expire after 15 minutes.
+</Note>

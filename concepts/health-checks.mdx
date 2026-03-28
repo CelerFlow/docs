@@ -1,0 +1,55 @@
+---
+title: "Health checks"
+description: "Monitor agent uptime and status with automated health reporting."
+---
+
+## Overview
+
+Connected agents report **health checks** to Celerflow at regular intervals. Health data powers the dashboard's real-time monitoring, alerting, and fleet-level status views.
+
+## How it works
+
+1. The agent sends a health report to Celerflow at a configurable interval.
+2. Celerflow records the report and updates the agent's status.
+3. If no report arrives within the expected window, the agent is marked as **stale**.
+
+## Health report payload
+
+Each health check includes:
+
+| Field | Description |
+|---|---|
+| `agent_id` | The reporting agent's UUID. |
+| `status` | Current agent status (e.g., `healthy`, `degraded`). |
+| `uptime` | Time since the agent started. |
+| `timestamp` | When the report was generated. |
+
+## Staleness detection
+
+Celerflow runs a background job (`pg_cron`) to detect agents that haven't reported health within their expected interval. Agents with no health report for **30 days** are marked as stale.
+
+<Warning>
+  Stale agents are not automatically removed. They remain visible in the dashboard until manually disconnected or removed.
+</Warning>
+
+## Viewing health status
+
+### Dashboard
+
+The fleet view shows each agent with a status indicator:
+
+- 🟢 **Healthy** — reporting normally.
+- 🟡 **Stale** — no recent health report.
+- ⚫ **Disconnected** — agent was disconnected.
+
+### CLI
+
+```bash
+ocauthz status
+```
+
+Shows the connection status, last health check time, and token expiry for the local agent.
+
+### API
+
+Use the [get health checks](/api-reference/agent/get-health-checks) endpoint to query health data programmatically.

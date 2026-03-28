@@ -1,0 +1,33 @@
+---
+title: "Delete fleet"
+description: "Delete a fleet and all its agents."
+api: "DELETE /delete-fleet"
+---
+
+## Request
+
+<ParamField body="fleet_id" type="string" required>
+  The fleet UUID to delete.
+</ParamField>
+
+<Warning>
+  This permanently deletes the fleet and disconnects all agents within it. Historical traces are retained according to your plan's retention policy.
+</Warning>
+
+### Example
+
+```bash
+curl -X DELETE https://ristessocgeoiifdbukq.supabase.co/functions/v1/delete-fleet \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"fleet_id": "fleet_abc123"}'
+```
+
+## Response
+
+```json
+{
+  "success": true,
+  "deleted_agents": 5
+}
+```

@@ -1,0 +1,39 @@
+---
+title: "Register agent"
+description: "Register a new agent to a fleet using a verified setup code."
+api: "POST /register-agents"
+---
+
+## Request
+
+<ParamField body="setup_code" type="string" required>
+  A valid setup code generated from the dashboard.
+</ParamField>
+
+<ParamField body="agent_name" type="string">
+  Human-readable name for the agent. Defaults to the machine hostname.
+</ParamField>
+
+### Example
+
+```bash
+curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/register-agents \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"setup_code": "ABC123", "agent_name": "code-reviewer"}'
+```
+
+## Response
+
+```json
+{
+  "agent_id": "agent_001",
+  "fleet_id": "fleet_abc123",
+  "bootstrap_token": "bt_...",
+  "created_at": "2026-03-28T07:00:00Z"
+}
+```
+
+<Note>
+  The `bootstrap_token` is only returned once. Store it securely.
+</Note>

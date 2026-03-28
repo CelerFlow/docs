@@ -1,0 +1,35 @@
+---
+title: "Request device code"
+description: "Start the device code OAuth flow for CLI authentication."
+api: "POST /cli-device-code"
+---
+
+## Request
+
+No body required.
+
+### Example
+
+```bash
+curl -X POST https://ristessocgeoiifdbukq.supabase.co/functions/v1/cli-device-code
+```
+
+## Response
+
+```json
+{
+  "device_code": "dc_abc123",
+  "user_code": "ABCD-1234",
+  "verification_url": "https://celerflow.vercel.app/cli-auth",
+  "expires_in": 900,
+  "interval": 5
+}
+```
+
+| Field | Description |
+|---|---|
+| `device_code` | Used to poll for the token. |
+| `user_code` | Displayed to the user for verification. |
+| `verification_url` | URL where the user signs in and enters the code. |
+| `expires_in` | Code validity in seconds (15 minutes). |
+| `interval` | Minimum seconds between polling attempts. |

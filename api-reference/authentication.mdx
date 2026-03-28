@@ -1,0 +1,57 @@
+---
+title: "Authentication"
+description: "How to obtain and use tokens for the Celerflow API."
+---
+
+## Overview
+
+Celerflow uses two authentication flows:
+
+1. **Device code flow** — for CLI and human users.
+2. **Bootstrap tokens** — for connected agents.
+
+## Device code flow
+
+Used by the `ocauthz login` CLI command and any client that needs user authentication.
+
+<Steps>
+  <Step title="Request a device code">
+    ```bash
+    POST /cli-device-code
+    ```
+
+    Returns a `device_code`, `user_code`, and `verification_url`.
+  </Step>
+
+  <Step title="User authorizes">
+    Direct the user to `verification_url` to sign in with Google and enter the `user_code`.
+  </Step>
+
+  <Step title="Poll for the token">
+    ```bash
+    POST /cli-device-token
+    Content-Type: application/json
+
+    { "device_code": "abc123" }
+    ```
+
+    Poll this endpoint until the user authorizes. Returns a user access token on success.
+  </Step>
+</Steps>
+
+## Bootstrap tokens
+
+Agents receive a bootstrap token when they connect to a fleet via `ocauthz connect`. This token:
+
+- Authenticates health reports and agent API calls.
+- Rotates automatically — call [rotate token](/api-reference/auth/rotate-token) to get a new one.
+- Is scoped to a single agent and fleet.
+
+## Using tokens
+
+Include the token in the `Authorization` header:
+
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+  https://ristessocgeoiifdbukq.supabase.co/functions/v1/list-fleets
+```

@@ -1,59 +1,47 @@
 ---
 title: "Introduction"
-description: "CelerFlow is an agent control plane — see what your AI agents do, control what they can access, and stop them when things go wrong."
+description: "CelerFlow is an agent governance platform — see what your AI agents do, control what they can access, and stop them when things go wrong."
 ---
+
+<Note>
+  **Beta** — CelerFlow currently supports OpenClaw agents. MCP Gateway support for other frameworks is [coming soon](/platform/roadmap).
+</Note>
 
 ## What is CelerFlow?
 
-CelerFlow is a **governance platform for AI agents**. It gives you visibility into every tool call your agents make, service-level permission controls, and a kill switch when something goes wrong.
+Other tools show you what agents do. **CelerFlow lets you control what they CAN do.**
 
-One sentence: **"Any agent, one command to connect. See it, control it, kill it."**
+CelerFlow is a **governance platform for AI agents**. One command to connect. Full visibility into every tool call. Service-level permission controls. A kill switch when things go wrong. Human-in-the-loop approval for dangerous operations.
+
+```bash
+npm install -g celerflow && celerflow login && celerflow connect --code <setup-code>
+```
+
+That's it. Traces start flowing on the next agent run. [Get started →](/quickstart)
 
 <CardGroup cols={2}>
-  <Card title="Tracing" icon="timeline">
+  <Card title="Tracing" icon="timeline" href="/concepts/tracing">
     Every tool call is recorded and classified — outbound writes are highlighted, local reads are hidden by default. Traces are grouped by task for easy browsing.
   </Card>
 
-  <Card title="Service permissions" icon="shield-check">
+  <Card title="Service permissions" icon="shield-check" href="/concepts/service-permissions">
     Control access at the service level (Gmail, Notion, GitHub...) with separate read/write toggles. Write operations can require human approval.
   </Card>
 
-  <Card title="Kill switch" icon="power-off">
-    Terminate any agent instantly from the dashboard. All tool calls are blocked within seconds via Supabase Realtime push.
+  <Card title="Kill switch" icon="power-off" href="/concepts/agents">
+    Terminate any agent instantly from the dashboard. All tool calls are blocked within seconds via real-time push.
   </Card>
 
-  <Card title="Agent score" icon="chart-line">
-    Every agent gets a 0–100 health score (A–F grade) based on uptime, success rate, block rate, and response time. Track trends over 7/30 days.
+  <Card title="Risk alerts" icon="triangle-exclamation" href="/concepts/risk-alerts">
+    Automatic detection of anomalous behavior — token spikes, high block rates, latency anomalies, agents going offline.
   </Card>
 </CardGroup>
-
-## Two ways to connect
-
-CelerFlow supports two integration modes:
-
-| | **OpenClaw plugin** | **MCP Gateway** |
-|---|---|---|
-| For | OpenClaw agents | Any MCP-compatible framework |
-| Setup | `celerflow connect` | Change MCP server URL |
-| Coverage | **All tool calls** (built-in + MCP) | MCP tool calls only |
-| Latency | Zero (local hook) | ~10–50ms |
-| Features | Full (tracing, termination, permissions, HITL, score, token stats) | Tracing, permissions, HITL |
-
-<Columns cols={2}>
-  <Card title="OpenClaw plugin" icon="plug" href="/integration/openclaw-plugin">
-    Deepest integration. Hooks into every tool call locally.
-  </Card>
-
-  <Card title="MCP Gateway" icon="route" href="/integration/mcp-gateway">
-    Works with LangGraph, CrewAI, OpenAI Agents SDK, Strands, Mastra — any framework with MCP client support.
-  </Card>
-</Columns>
 
 ## How it works
 
 <Steps>
   <Step title="Connect your agent">
-    Install the CelerFlow plugin or point your MCP client to `gateway.celerflow.ai`. Authenticate with the `celerflow` CLI.
+    Run `celerflow connect --code <setup-code>`. The CLI discovers your OpenClaw agents, registers them, and writes the plugin config automatically.
   </Step>
 
   <Step title="Traces flow automatically">
@@ -68,6 +56,17 @@ CelerFlow supports two integration modes:
     The workspace overview shows agent health scores, risk alerts, token usage, and blocked operations. Hit the kill switch if something goes wrong.
   </Step>
 </Steps>
+
+## Why not just observability?
+
+| | Observability tools | CelerFlow |
+|---|---|---|
+| See what agents do | ✅ | ✅ |
+| Control what agents can access | ❌ | ✅ Service-level permissions |
+| Stop an agent instantly | ❌ | ✅ Kill switch |
+| Approve dangerous operations | ❌ | ✅ Human-in-the-loop |
+| Detect anomalous behavior | ⚠️ Manual alerts | ✅ Automatic risk alerts |
+| Agent health scoring | ❌ | ✅ 0–100 score with trends |
 
 ## Get started
 

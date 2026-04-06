@@ -6,7 +6,7 @@ description: "Overview of the CelerFlow REST API."
 ## Base URL
 
 ```
-https://ristessocgeoiifdbukq.supabase.co/functions/v1/
+https://api.celerflow.ai/functions/v1/
 ```
 
 ## Edge Function routing
@@ -17,14 +17,15 @@ CelerFlow uses **consolidated Edge Functions** with sub-routes. Each function ha
 |---|---|
 | `/agent` | Register, health, terminate, disconnect, remove, policies, confirmations |
 | `/fleet` | Create, list, get, delete |
-| `/trace` | Ingest spans, query traces |
+| `/trace` | Ingest spans (batch) |
+| `/notify` | Notification delivery (Telegram, Slack, WhatsApp) |
 | `/cli` | Device code, device token |
 | `/team` | Create, invite, list members, remove member |
 | `/audit` | Create export, list exports, download |
 | `/stripe` | Webhook handler |
 | `/api-key` | Create, list, revoke |
 | `/risk` | Query risk alerts, resolve alerts |
-| `/mcp` | Gateway proxy (deployed separately on Railway) |
+| `/mcp` | MCP Gateway proxy (coming soon) |
 
 ## Authentication
 
@@ -34,10 +35,12 @@ Most endpoints require a Bearer token:
 Authorization: Bearer YOUR_TOKEN
 ```
 
-Two token types:
+Four authentication methods:
 
-- **User token** — from the device code OAuth flow. Used for dashboard and fleet operations.
-- **Bootstrap token** — assigned to an agent on connection. Used for health reporting, trace ingestion, and agent-specific operations.
+- **User token (JWT)** — from the device code OAuth flow. Used for dashboard and workspace operations.
+- **Bootstrap token** — assigned to an agent on connection (`bt_xxx`). Used for health reporting, trace ingestion, and agent-specific operations.
+- **API key** — created from Settings → API Keys (`cf_xxx`). Used for programmatic access and the MCP Gateway.
+- **Device code** — temporary code used during the `celerflow login` CLI flow.
 
 ## Response format
 
@@ -65,12 +68,22 @@ Error:
 
 ## Rate limits
 
-| Plan | Requests/min |
-|---|---|
-| Free | 30 |
-| Pro | 100 |
-| Team | 500 |
-| Enterprise | 2,000 |
+| Plan | API requests/min | Trace batch limit |
+|---|---|---|
+| Free | 60 | 3 req / 60s per agent |
+| Pro | 300 | 3 req / 60s per agent |
+| Team | 1,000 | 3 req / 60s per agent |
+| Enterprise | 5,000 | 3 req / 60s per agent |
+
+## Plan limits
+
+| Resource | Free | Pro | Team | Enterprise |
+|---|---|---|---|---|
+| Agents | 3 | 20 | 100 | Unlimited |
+| Workspaces | 1 | 5 | 20 | Unlimited |
+| Team members | 1 | 1 | 10 | Unlimited |
+| Traces/day | 1,000 | 50,000 | 200,000 | Unlimited |
+| Trace retention | 3 days | 30 days | 90 days | 365 days |
 
 Rate-limited requests return HTTP 429 with a `Retry-After` header.
 

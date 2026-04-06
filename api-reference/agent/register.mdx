@@ -42,5 +42,26 @@ api: "POST /agent"
 ```
 
 <Note>
-  The `bootstrap_token` is only returned once. The CLI stores it automatically.
+  The `bootstrap_token` is only returned once. The CLI stores it automatically in `openclaw.plugin.json`.
 </Note>
+
+## Errors
+
+| Code | HTTP | Meaning |
+|---|---|---|
+| `SETUP_CODE_INVALID` | 404 | The setup code doesn't exist. Check for typos. |
+| `SETUP_CODE_EXPIRED` | 410 | Code expired (valid for 15 minutes). Generate a new one from the dashboard. |
+| `SETUP_CODE_CONSUMED` | 410 | Code was already used. Generate a new one. |
+| `PLAN_LIMIT_AGENTS` | 403 | Agent limit reached for your plan. Upgrade or remove unused agents. |
+| `AUTH_REQUIRED` | 401 | Missing or invalid user token. Run `celerflow login`. |
+| `RATE_LIMITED` | 429 | Too many requests. Check `Retry-After` header. |
+
+```json
+{
+  "error": {
+    "code": "SETUP_CODE_EXPIRED",
+    "message": "Setup code has expired. Generate a new one from the dashboard.",
+    "status": 410
+  }
+}
+```

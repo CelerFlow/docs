@@ -1,0 +1,44 @@
+---
+title: "Roadmap"
+description: "Upcoming features and what's available today."
+---
+
+## What's available now (Beta)
+
+CelerFlow is in **public beta** with full support for OpenClaw agents:
+
+| Feature | Status | Plan |
+|---|---|---|
+| Agent registration & connection | ✅ Available | Free |
+| Tracing (all tool calls) | ✅ Available | Free |
+| Service permissions (read/write) | ✅ Available | Free |
+| Kill switch (terminate agent) | ✅ Available | Free |
+| Human-in-the-loop approval | ✅ Available | Pro |
+| Agent health score | ✅ Available | Free |
+| Risk alerts | ✅ Available | Pro |
+| Teams & RBAC | ✅ Available | Team |
+| Audit export | ✅ Available | Team |
+| API keys | ✅ Available | Pro |
+| Notification channels | ✅ Available | Pro |
+
+## Coming soon
+
+### MCP Gateway
+
+Connect **any** MCP-compatible agent framework (LangGraph, CrewAI, OpenAI Agents SDK, Strands, Mastra) to CelerFlow without installing a plugin. The gateway federates multiple MCP servers behind a single endpoint with policy checks and tracing.
+
+[Learn more →](/integration/mcp-gateway)
+
+### Agent Payments
+
+Give agents their own USDC wallets for paying MCP services that charge via the x402 / MPP protocol (HTTP 402). Budget controls include per-transaction limits, daily/monthly caps, recipient allowlists, and HITL thresholds for high-value transactions.
+
+### Paid MCP Endpoints
+
+Make your agents accept payments from other agents. Set a price per tool call, CelerFlow generates a paid MCP endpoint, and other agents pay in USDC to access your agent's capabilities.
+
+---
+
+<Info>
+  Want early access to an upcoming feature? Reach out on [X](https://x.com/celerflow) or contact us from the dashboard.
+</Info>

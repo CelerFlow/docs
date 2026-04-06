@@ -39,7 +39,7 @@ Agents receive a bootstrap token on connection via `celerflow connect`. This tok
 
 ## API keys
 
-For the MCP Gateway, create API keys from **Settings → API Keys**:
+For programmatic access, create API keys from **Settings → API Keys**:
 
 - Keys are prefixed with `cf_` for identification.
 - Keys can be scoped to a specific agent or team.
@@ -49,5 +49,5 @@ For the MCP Gateway, create API keys from **Settings → API Keys**:
 
 ```bash
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-  https://ristessocgeoiifdbukq.supabase.co/functions/v1/fleet
+  https://api.celerflow.ai/functions/v1/fleet
 ```

@@ -39,3 +39,22 @@ api: "POST /agent"
 <Warning>
   Setting `terminated` blocks all tool calls immediately. The agent's plugin receives the update via Supabase Realtime within seconds.
 </Warning>
+
+## Errors
+
+| Code | HTTP | Meaning |
+|---|---|---|
+| `AGENT_NOT_FOUND` | 404 | Agent ID doesn't exist or you don't have access. |
+| `AUTH_REQUIRED` | 401 | Missing or invalid user token. |
+| `FORBIDDEN` | 403 | You don't have permission to terminate this agent (requires Operator role or above). |
+| `RATE_LIMITED` | 429 | Too many requests. |
+
+## What the agent sees
+
+When terminated, every tool call from the agent is blocked with:
+
+```
+Agent terminated by user. Re-enable from Celerflow Dashboard.
+```
+
+In-flight tool calls complete before blocking takes effect. The plugin checks termination status at the start of each `before_tool_call` hook.

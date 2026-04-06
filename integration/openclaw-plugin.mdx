@@ -46,25 +46,32 @@ flowchart TB
 
 ## Configuration
 
-The plugin reads from `openclaw.plugin.json` in your agent's workspace:
+The plugin reads from `openclaw.plugin.json` in your agent's workspace (`~/.openclaw/<agent-name>/`):
 
 ```json
 {
-  "id": "celerflow",
-  "name": "Celerflow Agent Governance",
-  "description": "Tracing, termination, and scoring for Celerflow",
-  "configSchema": {
-    "agentId": "your-agent-uuid",
-    "bootstrapToken": "bt_xxx",
-    "supabaseUrl": "https://ristessocgeoiifdbukq.supabase.co",
-    "supabaseAnonKey": "your-anon-key"
-  }
+  "agent_id": "your-agent-uuid",
+  "bootstrap_token": "bt_xxx",
+  "saas_url": "https://api.celerflow.ai"
 }
 ```
 
 <Tip>
-  You don't need to create this file manually. `celerflow connect` generates it automatically.
+  You **never** need to create this file manually. `celerflow connect` discovers your agents, registers them, and writes this config automatically.
 </Tip>
+
+The plugin uses `watchForConfig()` to monitor for this file. If the file doesn't exist when the agent starts, the plugin waits until `celerflow connect` creates it, then auto-activates.
+
+## Sync service
+
+Once activated, the plugin runs a background sync service:
+
+| Task | Interval | What it does |
+|---|---|---|
+| **Trace flush** | Every 300 seconds | Batches pending traces and sends to CelerFlow |
+| **Health check** | Every 15 minutes | Reports agent health status (latency, uptime) |
+| **Token flush** | Every 300 seconds | Sends accumulated token usage (input/output/cache) |
+| **Policy sync** | Real-time | Listens to Supabase Realtime for permission changes |
 
 ## What it covers vs MCP Gateway
 

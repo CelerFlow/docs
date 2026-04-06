@@ -33,7 +33,8 @@
               "concepts/service-permissions",
               "concepts/human-approval",
               "concepts/agent-score",
-              "concepts/health-checks"
+              "concepts/health-checks",
+              "concepts/risk-alerts"
             ]
           },
           {
@@ -41,7 +42,8 @@
             "pages": [
               "integration/openclaw-plugin",
               "integration/mcp-gateway",
-              "integration/cli"
+              "integration/cli",
+              "integration/notifications"
             ]
           },
           {
@@ -49,8 +51,7 @@
             "pages": [
               "dashboard/workspace-overview",
               "dashboard/agents",
-              "dashboard/tracing",
-              "dashboard/payments"
+              "dashboard/tracing"
             ]
           },
           {
@@ -58,7 +59,8 @@
             "pages": [
               "platform/billing",
               "platform/teams-rbac",
-              "platform/audit-export"
+              "platform/audit-export",
+              "platform/roadmap"
             ]
           }
         ]
@@ -86,7 +88,7 @@
             ]
           },
           {
-            "group": "Fleet",
+            "group": "Workspace",
             "pages": [
               "api-reference/fleet/create",
               "api-reference/fleet/list",

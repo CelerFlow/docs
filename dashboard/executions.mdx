@@ -1,0 +1,43 @@
+---
+title: "Executions"
+description: "Where your workflows and their runs live after deploy."
+---
+
+This page covers two surfaces: the workflow list, where all your deployed workflows live, and the per-workflow detail page, where you inspect individual runs.
+
+## Workflow list
+
+The dashboard home and `/executions` both show every workflow in the current workspace, sorted most-recent first. Each row carries a status badge:
+
+| Badge | Meaning |
+|---|---|
+| `draft` | Built in chat, not yet deployed |
+| `ready` | Validated and ready to deploy |
+| `running` | A run is currently in progress |
+| `completed` | Most recent run finished successfully |
+| `failed` | Most recent run ended in error |
+
+## Workflow detail page
+
+Click any workflow to open its detail page. You'll see:
+
+- **Run history** — the last 20 runs, newest first. Each row shows the run status, start time, and duration.
+- **Step-level logs** — expand a run to see each step's duration and any error message. Failures point to the specific step, not the workflow as a whole.
+- **Final output** — the run's `result_markdown` is rendered inline as the last step's output.
+- **Rerun** — the **Rerun** button queues a new run with the same workflow config. Previous run history is preserved.
+- **Dispatch failed banner** — if Trigger.dev couldn't accept the run, the UI shows a specific dispatch-failed banner rather than a generic error. This means CelerFlow couldn't hand the run off; it doesn't mean your workflow has a bug. Retrying is safe.
+
+## Realtime while watching a run
+
+While a run is in progress, run and step rows update in place as each step completes — no manual refresh needed. See [Runs & executions](/concepts/runs) for the data model behind the live updates.
+
+## See also
+
+<CardGroup cols={2}>
+  <Card title="Runs & executions" icon="bolt" href="/concepts/runs">
+    The data model and orchestration behind every run.
+  </Card>
+  <Card title="Approvals" icon="hand" href="/concepts/approvals">
+    Human-in-the-loop checkpoints that can pause a run mid-flight.
+  </Card>
+</CardGroup>

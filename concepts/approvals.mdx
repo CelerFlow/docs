@@ -1,0 +1,34 @@
+---
+title: "Approvals"
+description: "Human-in-the-loop pause points and the team confirmations channel."
+---
+
+Not every step runs automatically. CelerFlow has three points where it stops and waits for a human to act before continuing. These aren't blockers — they're guardrails that keep workflows from running with missing credentials or wrong targets.
+
+## The three pause types
+
+### 1. OAuth gate
+
+If a workflow step requires a service that isn't connected to the team, the [Planner](/concepts/planner) pauses before deploying and surfaces a connection card directly in the chat. Connect the service in place, and the Planner resumes.
+
+This pause happens at plan-time, before the workflow is deployed. A run won't be queued until all required connections are present. See [Connections](/concepts/connections).
+
+### 2. Notion target selection
+
+Before any workflow that writes to Notion is deployed, the Planner asks which Notion database or page to write into. You must supply a real target — placeholder IDs are validated and rejected, and the Planner asks again until a valid target is confirmed.
+
+This prevents workflows from deploying with an unresolved destination. See [Integrations — Notion](/integration/notion).
+
+### 3. Team confirmations
+
+Pending approvals and resolved events are broadcast on the Supabase channel `team:${teamId}:confirmations`. Any dashboard tab subscribed to this channel receives approval events in real time without polling.
+
+This powers the confirmations surface on the dashboard — the feed where you can see which workflows are waiting and act on them directly.
+
+## Who can approve
+
+Approval permissions are scoped by team role. Only members with sufficient role can resolve a pending confirmation. See [Teams & roles](/platform/teams-rbac) for the full role matrix.
+
+<Note>
+  Approvals in v0 cover connection gates and Notion target selection. More approval types — such as step-level review before a workflow proceeds — are planned for future releases.
+</Note>

@@ -1,70 +1,33 @@
 ---
-title: "Billing & plans"
-description: "Plan tiers, pricing, and subscription management."
+title: "Billing & usage"
+description: "Plans, quotas, and what counts as a workflow execution."
 ---
+
+Every CelerFlow workspace lives under a plan. Plans determine how many workflow runs you can execute per billing period, how many workspaces you can own, and how far back your run history is kept.
 
 ## Plans
 
-| | **Free** | **Pro $19/mo** | **Team $49/mo** | **Enterprise** |
-|---|---|---|---|---|
-| **Agents** | 3 | 20 | 100 | Unlimited |
-| **Workspaces** | 1 | 5 | 20 | Unlimited |
-| **Team members** | 1 | 1 | 10 | Unlimited |
-| **Trace retention** | 3 days | 30 days | 90 days | 365 days |
-| **Health check retention** | 7 days | 90 days | 90 days | 365 days |
-| **Traces per day** | 1,000 | 50,000 | 200,000 | Unlimited |
-| **API rate (req/min)** | 60 | 300 | 1,000 | 5,000 |
-| | | | | |
-| **Core** | | | | |
-| Dashboard + kill switch | ✅ | ✅ | ✅ | ✅ |
-| Service permission control | ✅ | ✅ | ✅ | ✅ |
-| Enhanced tracing | ✅ | ✅ | ✅ | ✅ |
-| Agent score | ✅ | ✅ | ✅ | ✅ |
-| | | | | |
-| **Advanced** | | | | |
-| Human approval (HITL) | ❌ | ✅ | ✅ | ✅ |
-| MCP Gateway (coming soon) | ❌ | ✅ | ✅ | ✅ |
-| Token usage analytics | ❌ | ✅ | ✅ | ✅ |
-| Risk alerts | ❌ | ✅ | ✅ | ✅ |
-| Notification channels | ❌ | ✅ | ✅ | ✅ |
-| API access | ❌ | ✅ | ✅ | ✅ |
-| Config export | ❌ | ✅ | ✅ | ✅ |
-| | | | | |
-| **Team** | | | | |
-| AI suggested actions | ❌ | ❌ | ✅ | ✅ |
-| RBAC | ❌ | ❌ | ✅ | ✅ |
-| Audit log export | ❌ | ❌ | ✅ | ✅ |
-| | | | | |
-| **Enterprise** | | | | |
-| SSO / SCIM | ❌ | ❌ | ❌ | ✅ |
-| SLA | — | — | 99.5% | 99.9% |
-| Private deployment | ❌ | ❌ | ❌ | ✅ |
+| Plan | Executions / month | Workspaces | Members | Run history |
+| :--- | :--- | :--- | :--- | :--- |
+| **Free** | 20 | 1 | 1 | 3 days |
+| **Pro** | 1,000 | 3 | 5 | 30 days |
+| **Enterprise** | Unlimited | Unlimited | Unlimited | 365 days |
 
-Annual billing: **20% off** (Pro $15/mo, Team $39/mo).
+Limits are enforced server-side. Once you exhaust your executions for the period, new workflow runs are blocked until the period resets or you upgrade.
 
-## Upgrading
+## What counts as an execution
 
-1. Go to **Settings → Billing**.
-2. Select a plan and billing interval.
-3. Complete payment via Stripe Checkout.
-4. Your plan upgrades immediately.
+One row in the `workflow_runs` table = one execution. Every time a workflow runs — including reruns — it counts once. Drafts, failed deploys that never reach Trigger.dev, and planner-side conversations do not count.
 
-## Pro trial
+## Billing period
 
-Pro plan includes a **14-day free trial** (first subscription only, no credit card required).
+If you have an active subscription, the period tracks your subscription's `current_period_start` / `current_period_end`. Otherwise the period falls back to the calendar month. You can see the current period and used/remaining executions in **Settings → Billing**.
 
-## Managing your subscription
+## Upgrading and downgrading
 
-Click **Manage subscription** in Settings → Billing to access Stripe's Customer Portal:
-- Change plan (upgrade/downgrade)
-- Update payment method
-- Cancel subscription
-- View invoices
+Upgrade or manage your subscription from **Settings → Billing**. Downgrades take effect at the end of the current period.
 
-## Downgrade behavior
+## See also
 
-When you downgrade or cancel:
-- Access continues until the end of your billing period.
-- Trace data beyond the new retention limit is cleaned up by the nightly cron.
-- Agents beyond the new limit are **not** disconnected — you just can't add new ones.
-- Team features (RBAC, audit export) become read-only.
+- [Runs & executions](/concepts/runs) — what actually happens inside one execution.
+- [Workspaces](/concepts/workspaces) — how workspaces relate to your plan's workspace quota.

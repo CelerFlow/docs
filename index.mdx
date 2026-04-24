@@ -1,75 +1,56 @@
 ---
 title: "Introduction"
-description: "CelerFlow is an agent governance platform — see what your AI agents do, control what they can access, and stop them when things go wrong."
+description: "CelerFlow builds and runs automated workflows from a chat. Describe what you need in plain English."
 ---
 
 <Note>
-  **Beta** — CelerFlow currently supports OpenClaw agents. MCP Gateway support for other frameworks is [coming soon](/platform/roadmap).
+  **Public Beta** — CelerFlow is live at [celerflow.vercel.app](https://celerflow.vercel.app). The public API is in development — see the [API reference](/api-reference/introduction).
 </Note>
 
-## What is CelerFlow?
+## Say it once. It's done.
 
-Other tools show you what agents do. **CelerFlow lets you control what they CAN do.**
-
-CelerFlow is a **governance platform for AI agents**. One command to connect. Full visibility into every tool call. Service-level permission controls. A kill switch when things go wrong. Human-in-the-loop approval for dangerous operations.
-
-```bash
-npm install -g celerflow && celerflow login && celerflow connect --code <setup-code>
-```
-
-That's it. Traces start flowing on the next agent run. [Get started →](/quickstart)
+Tell CelerFlow what you need in plain English. The Planner reads your description, drafts a step-by-step workflow, and waits for your confirmation. Once you approve, CelerFlow runs every step automatically — no code, no config, no drag-and-drop.
 
 <CardGroup cols={2}>
-  <Card title="Tracing" icon="timeline" href="/concepts/tracing">
-    Every tool call is recorded and classified — outbound writes are highlighted, local reads are hidden by default. Traces are grouped by task for easy browsing.
+  <Card title="Build in chat" icon="wand-magic-sparkles" href="/concepts/planner">
+    Describe the outcome you want. The Planner figures out every step.
   </Card>
 
-  <Card title="Service permissions" icon="shield-check" href="/concepts/service-permissions">
-    Control access at the service level (Gmail, Notion, GitHub...) with separate read/write toggles. Write operations can require human approval.
+  <Card title="Connect your tools" icon="plug" href="/concepts/connections">
+    Team-scoped OAuth for Gmail, Notion, HubSpot, Slack, and Firecrawl — connect once, use everywhere.
   </Card>
 
-  <Card title="Kill switch" icon="power-off" href="/concepts/agents">
-    Terminate any agent instantly from the dashboard. All tool calls are blocked within seconds via real-time push.
+  <Card title="Approve what matters" icon="shield-check" href="/concepts/approvals">
+    CelerFlow pauses for your input when an OAuth connection is missing or a Notion target needs selecting.
   </Card>
 
-  <Card title="Risk alerts" icon="triangle-exclamation" href="/concepts/risk-alerts">
-    Automatic detection of anomalous behavior — token spikes, high block rates, latency anomalies, agents going offline.
+  <Card title="Run and rerun" icon="play" href="/concepts/runs">
+    Watch each step execute in real time. Rerun any workflow with one click.
   </Card>
 </CardGroup>
 
 ## How it works
 
 <Steps>
-  <Step title="Connect your agent">
-    Run `celerflow connect --code <setup-code>`. The CLI discovers your OpenClaw agents, registers them, and writes the plugin config automatically.
+  <Step title="Sign in and create a workspace">
+    Go to [celerflow.vercel.app](https://celerflow.vercel.app), sign in, and complete the onboarding flow to set up your workspace.
   </Step>
 
-  <Step title="Traces flow automatically">
-    Every tool call is recorded with category (outbound write, local read, etc.), service name, parameters, and result. Traces are grouped by task/session.
+  <Step title="Connect a tool">
+    Head to Connections and link your first tool. Gmail is the fastest place to start.
   </Step>
 
-  <Step title="Set service permissions">
-    From the dashboard, configure per-service read/write permissions. Flag dangerous write operations for human approval.
+  <Step title="Describe what you need">
+    Open a new workflow and type what you want to happen in plain English. Be specific about the outcome — CelerFlow handles the rest.
   </Step>
 
-  <Step title="Monitor and act">
-    The workspace overview shows agent health scores, risk alerts, token usage, and blocked operations. Hit the kill switch if something goes wrong.
+  <Step title="Confirm and deploy">
+    Review the draft workflow the Planner generates. Confirm it and watch each step run in real time.
   </Step>
 </Steps>
-
-## Why not just observability?
-
-| | Observability tools | CelerFlow |
-|---|---|---|
-| See what agents do | ✅ | ✅ |
-| Control what agents can access | ❌ | ✅ Service-level permissions |
-| Stop an agent instantly | ❌ | ✅ Kill switch |
-| Approve dangerous operations | ❌ | ✅ Human-in-the-loop |
-| Detect anomalous behavior | ⚠️ Manual alerts | ✅ Automatic risk alerts |
-| Agent health scoring | ❌ | ✅ 0–100 score with trends |
 
 ## Get started
 
 <Card title="Quickstart" icon="rocket" href="/quickstart" horizontal>
-  Connect your first agent and see traces in under 5 minutes.
+  Build your first workflow in five minutes — no CLI required.
 </Card>

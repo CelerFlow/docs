@@ -1,132 +1,52 @@
 ---
 title: "Quickstart"
-description: "Connect your first agent and see traces in under 5 minutes."
+description: "Build your first workflow in five minutes — no CLI required."
 ---
 
 <Info>
-  **Prerequisites**: An [OpenClaw](https://openclaw.ai) agent running locally (`~/.openclaw/`), a CelerFlow account ([celerflow.vercel.app](https://celerflow.vercel.app)), and Node.js v18+.
+  **Prerequisites**: a CelerFlow account at [celerflow.vercel.app](https://celerflow.vercel.app) and a Gmail account you're willing to OAuth. Nothing to install locally.
 </Info>
 
-## Connect your OpenClaw agent
+## Build your first workflow
 
 <Steps>
-  <Step title="Install the CLI and log in">
-    ```bash
-    npm install -g celerflow
-    celerflow login
-    ```
-
-    Your browser opens for Google OAuth. After signing in, credentials are saved locally.
+  <Step title="Sign in and create a workspace">
+    Go to [celerflow.vercel.app](https://celerflow.vercel.app), sign in, and complete onboarding. Pick a use-case and give the workspace a name. Your default platform agents are seeded automatically.
   </Step>
 
-  <Step title="Get a setup code">
-    From the [dashboard](https://celerflow.vercel.app):
-    1. Click **New workspace** (or use the default one)
-    2. Click **Add agent**
-    3. Copy the 6-character setup code (valid for 15 minutes)
+  <Step title="Connect Gmail">
+    From **Settings → Connections**, click **Connect Gmail**. A popup runs Google OAuth. The card flips to **Connected** once the connection is confirmed — usually within a few seconds.
   </Step>
 
-  <Step title="Connect">
-    ```bash
-    celerflow connect --code ABC123
-    ```
+  <Step title="Open a new workflow">
+    From the dashboard, click **New workflow**. Describe the outcome in one or two sentences. For example:
 
-    This single command does everything:
+    > When a new inbound lead email arrives, summarize it and file it to my Leads Notion database.
 
-    - Scans `~/.openclaw/` for agent workspaces (directories with `AGENTS.md`)
-    - Registers each discovered agent with CelerFlow
-    - Writes `openclaw.plugin.json` into each workspace with the bootstrap token
-    - The plugin **auto-activates** on the next agent run — no manual config needed
+    Be specific about the trigger, the action, and the destination.
   </Step>
 
-  <Step title="Verify">
-    ```bash
-    celerflow status
-    ```
+  <Step title="Answer the Planner's follow-ups">
+    The Planner may ask a clarifying question, surface a connection card if another tool is missing, or pause to let you pick a Notion target. Answer in chat or complete the connection. See [Approvals](/concepts/approvals) for what each pause means.
+  </Step>
 
-    You should see your agent ID, workspace name, and `connected` status. In the dashboard, your agent appears with a green health indicator.
+  <Step title="Confirm and deploy">
+    When the draft looks right, the Planner asks **"Ready to deploy?"**. Confirm it and the workflow goes live. Redeploying later upgrades the same workflow in place — no duplicates.
+  </Step>
+
+  <Step title="Watch it run">
+    Open the workflow from the dashboard to see run history, step-level logs, and the result. Updates stream in real time. See [Executions](/dashboard/executions) for the full detail view.
   </Step>
 </Steps>
 
-## Run your agent
-
-Start your OpenClaw agent as usual. The CelerFlow plugin loads automatically and you'll see:
-
-```
-[celerflow] Plugin registered for agent a1b2c3d4-...
-[celerflow] Starting trace sync + policy Realtime + health check
-```
-
-Every tool call is now traced. Open the [dashboard](https://celerflow.vercel.app) to see traces streaming in.
-
-<Tip>
-  Traces are batched and flushed every **5 minutes** to reduce API calls. If you don't see traces immediately, wait a moment or restart the agent (flush happens on shutdown too).
-</Tip>
-
-## What CelerFlow does for you
-
-Once connected, CelerFlow automatically:
-
-- **Traces** every tool call — categorized as outbound write, outbound read, local write, or local read
-- **Checks permissions** — blocks tool calls that violate your service policies
-- **Asks for approval** — pauses dangerous operations and waits for human confirmation
-- **Scores health** — calculates a 0–100 agent score updated hourly
-- **Detects risks** — alerts on token spikes, high block rates, latency anomalies
-
-## Try the kill switch
-
-From the dashboard, open your agent and click **Terminate**. The agent immediately sees:
-
-```
-Agent terminated by user. Re-enable from Celerflow Dashboard.
-```
-
-All tool calls are blocked. Re-enable from the dashboard when ready.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title="No OpenClaw agent workspaces found">
-    CelerFlow looks for agent workspaces in `~/.openclaw/` containing an `AGENTS.md` file. Make sure OpenClaw is installed and you have at least one agent workspace set up.
-  </Accordion>
-
-  <Accordion title="Setup code expired">
-    Setup codes are valid for 15 minutes. Go back to the dashboard and generate a new one from **Add agent**.
-  </Accordion>
-
-  <Accordion title="Traces not appearing">
-    The plugin batches traces and flushes every 300 seconds. Wait a few minutes, or stop and restart your agent to trigger a flush. Run `celerflow doctor` for diagnostics.
-  </Accordion>
-
-  <Accordion title="Agent shows as stale">
-    Health checks are sent every 15 minutes. If your agent was offline for more than 30 minutes, it may show as stale. It will recover automatically on the next health check.
-  </Accordion>
-
-  <Accordion title="Permission denied errors">
-    Check your service permissions in the dashboard under your agent's **Permissions** tab. Make sure the tool's service is allowed for the operation type (read/write).
-  </Accordion>
-</AccordionGroup>
-
-<Accordion title="Using a different framework? (Coming soon)">
-  The **MCP Gateway** will let you connect LangGraph, CrewAI, OpenAI Agents SDK, and other MCP-compatible frameworks without installing a plugin. [Learn more →](/integration/mcp-gateway)
-</Accordion>
-
-## Next steps
+## What's next
 
 <CardGroup cols={2}>
-  <Card title="Set permissions" icon="shield-check" href="/concepts/service-permissions">
-    Control what services each agent can read and write.
+  <Card title="How workflows work" icon="diagram-project" href="/concepts/workflows">
+    The lifecycle of a workflow — draft, deploy, run, rerun.
   </Card>
 
-  <Card title="Understand tracing" icon="timeline" href="/concepts/tracing">
-    How traces are classified and grouped.
-  </Card>
-
-  <Card title="Use the dashboard" icon="layout-dashboard" href="/dashboard/workspace-overview">
-    Navigate the workspace overview.
-  </Card>
-
-  <Card title="CLI reference" icon="terminal" href="/integration/cli">
-    Full command reference for the `celerflow` CLI.
+  <Card title="Building in chat" icon="comments" href="/dashboard/building-a-workflow">
+    A deeper walkthrough of the chat builder, one step at a time.
   </Card>
 </CardGroup>

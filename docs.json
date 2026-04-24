@@ -27,31 +27,31 @@
           {
             "group": "Core concepts",
             "pages": [
-              "concepts/agents",
               "concepts/workspaces",
-              "concepts/tracing",
-              "concepts/service-permissions",
-              "concepts/human-approval",
-              "concepts/agent-score",
-              "concepts/health-checks",
-              "concepts/risk-alerts"
+              "concepts/workflows",
+              "concepts/planner",
+              "concepts/platform-agents",
+              "concepts/connections",
+              "concepts/runs",
+              "concepts/approvals"
             ]
           },
           {
-            "group": "Integration",
+            "group": "Integrations",
             "pages": [
-              "integration/openclaw-plugin",
-              "integration/mcp-gateway",
-              "integration/cli",
-              "integration/notifications"
+              "integration/gmail",
+              "integration/notion",
+              "integration/hubspot",
+              "integration/slack",
+              "integration/firecrawl"
             ]
           },
           {
-            "group": "Dashboard",
+            "group": "Dashboard guide",
             "pages": [
-              "dashboard/workspace-overview",
-              "dashboard/agents",
-              "dashboard/tracing"
+              "dashboard/building-a-workflow",
+              "dashboard/executions",
+              "dashboard/settings"
             ]
           },
           {
@@ -59,7 +59,7 @@
             "pages": [
               "platform/billing",
               "platform/teams-rbac",
-              "platform/audit-export",
+              "platform/audit-log",
               "platform/roadmap"
             ]
           }
@@ -71,79 +71,11 @@
           {
             "group": "Overview",
             "pages": [
-              "api-reference/introduction",
-              "api-reference/authentication"
-            ]
-          },
-          {
-            "group": "Agent",
-            "pages": [
-              "api-reference/agent/register",
-              "api-reference/agent/health",
-              "api-reference/agent/terminate",
-              "api-reference/agent/disconnect",
-              "api-reference/agent/remove",
-              "api-reference/agent/policies",
-              "api-reference/agent/confirmations"
-            ]
-          },
-          {
-            "group": "Workspace",
-            "pages": [
-              "api-reference/fleet/create",
-              "api-reference/fleet/list",
-              "api-reference/fleet/get",
-              "api-reference/fleet/delete"
-            ]
-          },
-          {
-            "group": "Trace",
-            "pages": [
-              "api-reference/trace/ingest",
-              "api-reference/trace/query"
-            ]
-          },
-          {
-            "group": "Auth",
-            "pages": [
-              "api-reference/auth/device-code",
-              "api-reference/auth/device-token",
-              "api-reference/auth/setup-code",
-              "api-reference/auth/rotate-token"
+              "api-reference/introduction"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Blog",
-          "href": "https://celerflow.ai/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "navbar": {
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://celerflow.vercel.app"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "cursor"
     ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/celerflow"
-    }
   }
 }

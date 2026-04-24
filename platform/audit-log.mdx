@@ -1,0 +1,28 @@
+---
+title: "Audit log"
+description: "Export a record of team activity for compliance and review."
+---
+
+CelerFlow keeps a server-side record of actions on your team — workflows built and deployed, connections added and removed, runs triggered, member changes. You can export this record as JSON or CSV on demand.
+
+<Note>
+  Audit log export is available on the **Pro** plan and above. See [Billing](/platform/billing).
+</Note>
+
+## Exporting
+
+From the audit settings surface, pick a date range and a format (**JSON** or **CSV**), then create the export. When it finishes, you'll see the row count and a download link. Past exports stay available for re-download.
+
+## What gets recorded
+
+Activity from every team member is recorded with the actor, action type, and a timestamp. Examples:
+
+- Workflow created, deployed, redeployed, or deleted.
+- Run triggered, reran, or cancelled.
+- Connection added, refreshed, or removed.
+- Member invited, role changed, or removed.
+
+## See also
+
+- [Workspaces](/concepts/workspaces) — audit records are scoped to a team.
+- [Teams & roles](/platform/teams-rbac) — role changes are themselves audit events.

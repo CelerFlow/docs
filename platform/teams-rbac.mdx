@@ -1,51 +1,42 @@
 ---
-title: "Teams & RBAC"
-description: "Invite team members and manage permissions with role-based access control."
-tag: "TEAM"
+title: "Teams & roles"
+description: "How team membership and role-based access work in CelerFlow."
 ---
 
-## Overview
+Every workspace is owned by a team. Teams are how CelerFlow shares connections, workflows, and runs between multiple users.
 
-Teams let multiple users share access to fleets, agents, traces, and policies with role-based permissions.
+## The four roles
 
-## Roles
+| Role | Level | What it means |
+| :--- | :--- | :--- |
+| **Owner** | 4 | Assigned automatically to the person who creates the team. Full control. |
+| **Admin** | 3 | Can invite, remove members, and change roles. |
+| **Operator** | 2 | Day-to-day workflow work — build, deploy, rerun, approve. |
+| **Viewer** | 1 | Read-only access. |
 
-| Role | View dashboard | View traces | Terminate agent | Edit policies | Manage members | Billing |
-|---|---|---|---|---|---|---|
-| **Owner** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Admin** | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| **Operator** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
-| **Viewer** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+Roles are hierarchical: a higher role satisfies any check that requires a lower role. Role checks are enforced server-side on every team route — a client that tries to invite without at least the admin role gets a `403`.
 
-## Creating a team
+## What each role can do
 
-1. Go to **Settings → Team**.
-2. Enter a team name and click **Create team**.
-3. You become the Owner automatically.
+<Note>
+  The role tiers and their hierarchy are enforced today in the backend. The in-product UI for team management is still in development — see [Roadmap](/platform/roadmap). You can already exercise roles via the team API endpoints.
+</Note>
+
+| Action | Minimum role |
+| :--- | :--- |
+| See teams you belong to | Viewer |
+| View workflows and runs | Viewer |
+| Build, deploy, and rerun workflows | Operator |
+| Invite members | Admin |
+| Remove members (other than yourself) | Admin |
+| Change a member's role | Admin |
+| Transfer ownership or delete the team | Owner |
 
 ## Inviting members
 
-1. In the Team page, enter the member's email and select a role.
-2. Click **Invite**.
-3. The invited user will see the team in their Settings → Team page.
-4. They click **Accept** to join.
+An admin (or owner) issues an invite from the team API with the invitee's email and a role. Once accepted, the new member appears in `team_members` with the assigned role. Everyone on the team automatically sees the team's connections and workflows, subject to their role.
 
-<Note>
-  The invited user must have an existing CelerFlow account.
-</Note>
+## See also
 
-## Sharing fleets with a team
-
-Assign a fleet to a team by updating the fleet's `team_id`. Team members can then see all agents and traces in that fleet, subject to their role permissions.
-
-## Switching teams
-
-If you belong to multiple teams, use the team selector in Settings → Team to switch context. Your personal workspace is always accessible.
-
-## Removing members
-
-Owners and Admins can remove members from the Team page. Removing a member revokes their access immediately.
-
-<Note>
-  The Owner cannot be removed. To transfer ownership, contact support.
-</Note>
+- [Workspaces](/concepts/workspaces) — how a workspace binds to a team.
+- [Approvals](/concepts/approvals) — role scoping for pending confirmations.

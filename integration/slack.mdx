@@ -1,0 +1,20 @@
+---
+title: "Slack"
+description: "Post workflow results to Slack channels."
+---
+
+## What this connection enables
+
+The **Archiver Agent** uses Slack as a delivery destination. When a workflow completes, results can be posted to a Slack channel of your choice — useful for surfacing summaries or analysis without switching context.
+
+## Connect it
+
+From **Settings → Connections**, click **Connect Slack**. A popup runs OAuth and the card flips to **Connected** once Composio confirms. See [Connections](/concepts/connections) for scope, stale-account handling, and polling behavior.
+
+## Scopes and permissions
+
+Slack access is scoped to posting messages to channels the OAuth user can see. The integration does not read message history.
+
+## Known limitations
+
+**Beta.** Some Slack delivery flows still route through a `coming_soon` path, and legacy `slack_not_connected` copy appears in parts of the UI. See [Roadmap](/platform/roadmap) for where this is heading.

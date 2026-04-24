@@ -1,0 +1,34 @@
+---
+title: "Planner"
+description: "The chat-driven builder that turns plain-English intent into a validated workflow."
+---
+
+The Planner is the conversation that happens before a workflow runs. You say what you want. The Planner asks just enough questions, assembles the right steps, checks for blockers, and deploys. Say it once. It's done.
+
+## Conversation order
+
+A Planner session follows a consistent five-phase flow:
+
+1. **Clarify goal and destination** — The Planner confirms what outcome you want and where the result should land (e.g., a Notion page, a Gmail draft, a run detail view).
+2. **Discover available agents** — The Planner inspects your team's agent pool to see which [platform agents](/concepts/platform-agents) can cover the required steps.
+3. **Draft the plan** — A proposed DAG is shown in chat. You can accept it or ask for changes.
+4. **Gate on missing connections** — If a required OAuth provider isn't connected, the Planner pauses here. See [HITL pause points](#hitl-pause-points) below.
+5. **Deploy** — You confirm and the workflow is created and queued for deployment.
+
+## How the pipeline works
+
+Behind the conversation is a LangGraph pipeline with four nodes: **intent** (parse your goal into a structured request), **match** (find pool agents that cover the required capabilities), **assemble** (wire the steps into a DAG with bound inputs and output keys), and **validate** (check for missing connections, placeholder target IDs, and binding correctness). The pipeline produces one of three outcomes: `draft_ready`, `needs_clarification`, or `validation_failed`. Only `draft_ready` advances to deploy.
+
+## HITL pause points
+
+The Planner stops and waits for a human action in two cases:
+
+**Missing OAuth connection** — If a step requires a provider (e.g. Gmail, Notion) that isn't connected to the team, a connection card appears in the chat. You connect it in place and the Planner resumes. See [Connections](/concepts/connections).
+
+**Notion target selection** — Before deploying any workflow that writes to Notion, the Planner asks which database or page to write into. If you supply a placeholder ID, validation rejects it and the Planner asks again. See [Integrations — Notion](/integration/notion) and [Approvals](/concepts/approvals).
+
+## Deploy and redeploy
+
+When the plan is accepted, the Planner asks "Ready to deploy?" Confirming creates the workflow record and queues a deploy command to Trigger.dev. If you refine and redeploy in the same session, the existing workflow is upgraded in place — no duplicate is created. See [Workflows](/concepts/workflows) for details on the lifecycle.
+
+For a step-by-step UI walkthrough, see [Building a workflow](/dashboard/building-a-workflow).

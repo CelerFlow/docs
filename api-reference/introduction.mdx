@@ -1,101 +1,39 @@
 ---
-title: "API introduction"
-description: "Overview of the CelerFlow REST API."
+title: "API reference"
+description: "CelerFlow's public REST API is in development. Here's how to prepare."
 ---
 
-## Base URL
+<Note>
+  **In development.** The public REST API surface is not yet stable. Endpoint shapes, auth flows, and error formats may change. If you're interested in early access, let us know — see [Roadmap](/platform/roadmap).
+</Note>
 
-```
-https://api.celerflow.ai/functions/v1/
-```
+## What's coming
 
-## Edge Function routing
+When the public API ships, you'll be able to:
 
-CelerFlow uses **consolidated Edge Functions** with sub-routes. Each function handles multiple related operations:
+- Trigger a workflow run programmatically.
+- Fetch the status and step output of a specific run.
+- List workflows and their recent runs for a team.
 
-| Function | Routes |
-|---|---|
-| `/agent` | Register, health, terminate, disconnect, remove, policies, confirmations |
-| `/fleet` | Create, list, get, delete |
-| `/trace` | Ingest spans (batch) |
-| `/notify` | Notification delivery (Telegram, Slack, WhatsApp) |
-| `/cli` | Device code, device token |
-| `/team` | Create, invite, list members, remove member |
-| `/audit` | Create export, list exports, download |
-| `/stripe` | Webhook handler |
-| `/api-key` | Create, list, revoke |
-| `/risk` | Query risk alerts, resolve alerts |
-| `/mcp` | MCP Gateway proxy (coming soon) |
+Every endpoint will accept a team-scoped API key via `Authorization: Bearer <key>`.
 
-## Authentication
+## Generate an API key today
 
-Most endpoints require a Bearer token:
+You can already create API keys from the in-product Settings so you're ready the moment the API goes live.
 
-```
-Authorization: Bearer YOUR_TOKEN
-```
+<Steps>
+  <Step title="Open API keys">
+    From your workspace, go to **Settings → API keys**.
+  </Step>
+  <Step title="Create a key">
+    Name the key so you can identify it later. Team-scoped — it can call any API action the team has access to.
+  </Step>
+  <Step title="Store it safely">
+    The key is shown once. Treat it like a password. If you lose it, revoke it and generate a new one.
+  </Step>
+</Steps>
 
-Four authentication methods:
+## See also
 
-- **User token (JWT)** — from the device code OAuth flow. Used for dashboard and workspace operations.
-- **Bootstrap token** — assigned to an agent on connection (`bt_xxx`). Used for health reporting, trace ingestion, and agent-specific operations.
-- **API key** — created from Settings → API Keys (`cf_xxx`). Used for programmatic access and the MCP Gateway.
-- **Device code** — temporary code used during the `celerflow login` CLI flow.
-
-## Response format
-
-Success:
-
-```json
-{
-  "id": "fleet_abc123",
-  "name": "Production",
-  "created_at": "2026-01-15T10:30:00Z"
-}
-```
-
-Error:
-
-```json
-{
-  "error": {
-    "code": "NOT_FOUND",
-    "message": "Fleet not found",
-    "status": 404
-  }
-}
-```
-
-## Rate limits
-
-| Plan | API requests/min | Trace batch limit |
-|---|---|---|
-| Free | 60 | 3 req / 60s per agent |
-| Pro | 300 | 3 req / 60s per agent |
-| Team | 1,000 | 3 req / 60s per agent |
-| Enterprise | 5,000 | 3 req / 60s per agent |
-
-## Plan limits
-
-| Resource | Free | Pro | Team | Enterprise |
-|---|---|---|---|---|
-| Agents | 3 | 20 | 100 | Unlimited |
-| Workspaces | 1 | 5 | 20 | Unlimited |
-| Team members | 1 | 1 | 10 | Unlimited |
-| Traces/day | 1,000 | 50,000 | 200,000 | Unlimited |
-| Trace retention | 3 days | 30 days | 90 days | 365 days |
-
-Rate-limited requests return HTTP 429 with a `Retry-After` header.
-
-## Status codes
-
-| Code | Meaning |
-|---|---|
-| `200` | Success |
-| `201` | Created |
-| `400` | Bad request |
-| `401` | Unauthorized |
-| `403` | Forbidden |
-| `404` | Not found |
-| `429` | Rate limited |
-| `500` | Server error |
+- [Workflows](/concepts/workflows) — the lifecycle the API will expose.
+- [Runs & executions](/concepts/runs) — what the run fetch endpoints will return.

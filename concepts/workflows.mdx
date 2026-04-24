@@ -1,0 +1,39 @@
+---
+title: "Workflows"
+description: "A named DAG of steps built in chat, deployed to your team, and run on demand or on a schedule."
+---
+
+A workflow is a directed acyclic graph (DAG) of steps. You describe what you want in plain English; the [Planner](/concepts/planner) assembles the graph; you confirm and deploy. From there, runs execute automatically.
+
+## Anatomy of a workflow
+
+Each step in the graph has three things:
+
+- **Agent** — which [platform agent](/concepts/platform-agents) handles this step (e.g. `web_search_agent`, `summarize_agent`).
+- **Inputs** — values bound either from `workflow_input` (user-supplied at run time) or from a previous step's `output_key`.
+- **Output key** — a named result that downstream steps can bind to their inputs.
+
+Steps are ordered by dependency. A step can't run until all its upstream inputs are resolved.
+
+## Lifecycle states
+
+| State | Meaning |
+|---|---|
+| `draft` | Built in chat, not yet deployed |
+| `ready` | Validated and ready to deploy |
+| `deploying` | Deploy command queued with Trigger.dev |
+| `active` | Live and accepting runs |
+| `running` | A run is currently in progress |
+| `completed` | Most recent run finished successfully |
+| `failed` | Most recent run ended in error |
+
+## Redeploy behavior
+
+When you refine a workflow in the same Planner session and deploy again, CelerFlow upgrades the existing workflow in place rather than creating a duplicate. The `workflow_id` is pinned via the URL, so reruns and history stay attached to the same record.
+
+If you start a completely new Planner conversation, a new workflow record is created.
+
+## Building and running
+
+- To build a workflow from scratch, see the [Planner](/concepts/planner) and the [Building a workflow](/dashboard/building-a-workflow) UI walkthrough.
+- To inspect past runs, see [Runs & executions](/concepts/runs) and the [Executions](/dashboard/executions) dashboard.

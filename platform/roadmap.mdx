@@ -1,44 +1,25 @@
 ---
 title: "Roadmap"
-description: "Upcoming features and what's available today."
+description: "What's shipping next and what's being considered."
 ---
 
-## What's available now (Beta)
+CelerFlow is in public beta. This page tracks where the product is going. Confidence levels are honest — "Shipping next" is funded and in flight; "Considering" is on the table but not committed.
 
-CelerFlow is in **public beta** with full support for OpenClaw agents:
+## Shipping next
 
-| Feature | Status | Plan |
-|---|---|---|
-| Agent registration & connection | ✅ Available | Free |
-| Tracing (all tool calls) | ✅ Available | Free |
-| Service permissions (read/write) | ✅ Available | Free |
-| Kill switch (terminate agent) | ✅ Available | Free |
-| Human-in-the-loop approval | ✅ Available | Pro |
-| Agent health score | ✅ Available | Free |
-| Risk alerts | ✅ Available | Pro |
-| Teams & RBAC | ✅ Available | Team |
-| Audit export | ✅ Available | Team |
-| API keys | ✅ Available | Pro |
-| Notification channels | ✅ Available | Pro |
+- **Public REST API** — programmatically trigger workflows, fetch runs, and list workflows. API keys already exist; the HTTP surface is stabilizing. See [API reference](/api-reference/introduction).
+- **Full Settings UI** — team management, API keys, audit log, notifications, and appearance surfaces are being wired into the Settings navigation.
+- **Scheduled workflow triggers** — cron-style schedules so workflows can run on their own without a manual or inline trigger.
 
-## Coming soon
+## Considering
 
-### MCP Gateway
+- **More providers** — Google Drive, GitHub, Linear, Google Calendar, and other Composio-backed integrations.
+- **Workflow templates marketplace** — pre-built workflows you can clone instead of describing from scratch.
+- **MCP gateway** — expose MCP servers and an MCP proxy as a first-class workflow capability.
+- **Self-hosted / Docker distribution** — run CelerFlow on your own infrastructure.
+- **Team ownership transfer** — move the owner role to another member without recreating the team.
 
-Connect **any** MCP-compatible agent framework (LangGraph, CrewAI, OpenAI Agents SDK, Strands, Mastra) to CelerFlow without installing a plugin. The gateway federates multiple MCP servers behind a single endpoint with policy checks and tracing.
+## Not on the roadmap
 
-[Learn more →](/integration/mcp-gateway)
-
-### Agent Payments
-
-Give agents their own USDC wallets for paying MCP services that charge via the x402 / MPP protocol (HTTP 402). Budget controls include per-transaction limits, daily/monthly caps, recipient allowlists, and HITL thresholds for high-value transactions.
-
-### Paid MCP Endpoints
-
-Make your agents accept payments from other agents. Set a price per tool call, CelerFlow generates a paid MCP endpoint, and other agents pay in USDC to access your agent's capabilities.
-
----
-
-<Info>
-  Want early access to an upcoming feature? Reach out on [X](https://x.com/celerflow) or contact us from the dashboard.
-</Info>
+- **Tool-call-level tracing** — CelerFlow's telemetry is run-scoped and step-scoped, not per-tool-call. See [Runs & executions](/concepts/runs).
+- **OpenClaw plugin distribution** — CelerFlow is no longer a plugin for external agent runtimes.

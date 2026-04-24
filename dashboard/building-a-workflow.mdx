@@ -1,0 +1,36 @@
+---
+title: "Building a workflow"
+description: "The chat builder end-to-end — phrasing intent, answering follow-ups, and deploying."
+---
+
+## Open New workflow
+
+From the dashboard, click **New workflow** to open a fresh Planner session. A blank canvas and chat input appear side by side.
+
+## Phrase the intent
+
+Describe your trigger, the action you want taken, and where the result should land. A single sentence is usually enough:
+
+> When a new inbound lead email arrives, summarize it and file it to my Leads Notion database.
+
+Be specific about the destination — name the Notion database or Gmail label rather than leaving it vague. The more context you give, the better the [Planner](/concepts/planner) can pick the right agents and wire them together without extra back-and-forth.
+
+## Read the draft canvas
+
+After you send your intent, the canvas populates with a node graph. Each node is one step in the workflow, and edges show the order of execution — left to right, upstream before downstream. Read the graph to confirm the Planner understood your intent before moving on.
+
+## Answer clarifying questions
+
+The [Planner](/concepts/planner) may follow up if your intent is ambiguous. Answer in chat and be concrete — for example, "the summary goes in the `Notes` property" rather than "put it somewhere sensible." Precise answers let the Planner validate bindings without looping back again.
+
+## Handle OAuth prompts
+
+If a required provider isn't connected yet, the chat surfaces a connection card. Click **Connect**, complete the OAuth flow in the popup, and return to the chat. The Planner resumes automatically. See [Connections](/concepts/connections) for details on how team-shared connections work.
+
+## Pick a Notion target
+
+If your workflow writes to Notion, the Planner asks you to pick the exact database or page from a picker. Select a real target — placeholder IDs are rejected at validation and the Planner will ask again. See [Approvals](/concepts/approvals) for the broader pattern of human-in-the-loop checkpoints.
+
+## Confirm and deploy
+
+When the plan is ready, the Planner asks "Ready to deploy?". Confirm in chat and the workflow is created and queued. If you refine and redeploy within the same session, the existing workflow is upgraded in place — no duplicate is created. See [Workflows](/concepts/workflows) for lifecycle details.

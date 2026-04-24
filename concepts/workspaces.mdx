@@ -1,71 +1,47 @@
 ---
 title: "Workspaces"
-description: "Organize agents into workspaces for management and access control."
+description: "A workspace is a team-scoped home for your workflows, connections, and runs."
 ---
 
-## Overview
+A workspace is the top-level boundary in CelerFlow. Everything you build — workflows, connections, and run history — lives inside one workspace and is shared with your team.
 
-A **workspace** is a logical group of agents. Use workspaces to organize agents by project, team, environment, or any grouping that fits your organization.
+## What a workspace is
+
+In the database each workspace is a single row in `agent_fleets`, accessed via a `[slug]` segment in the URL (e.g. `/{slug}/dashboard`). The slug is stable; bookmark it and share it with teammates.
+
+A workspace is bound to exactly one team. Every team member sees the same workflows, connections, and run history. Access is controlled by role — see [Teams & roles](/platform/teams-rbac) for details.
+
+## Creating your first workspace
+
+When you sign in for the first time, CelerFlow walks you through a short onboarding flow:
+
+<Steps>
+  <Step title="Pick a use case">
+    Choose the category that best describes what your team automates (research, outreach, reporting, etc.).
+  </Step>
+  <Step title="Name the workspace">
+    Give it a short, memorable name — this becomes your slug.
+  </Step>
+  <Step title="Done">
+    Your workspace is ready. The default [platform agents](/concepts/platform-agents) are automatically seeded into your team's agent pool so the Planner can start assembling workflows immediately.
+  </Step>
+</Steps>
+
+## Switching workspaces
+
+Use the workspace picker in the top navigation bar to switch between workspaces. If you belong to multiple teams — say, a personal workspace and a company one — each appears in the picker. Clicking a workspace switches all context: workflows, connections, runs, and settings.
 
 <Note>
-  In the database schema and API, workspaces are stored as `agent_fleets`. The dashboard and CLI use the term "workspace".
+  Platform agents are seeded once per workspace at creation time. Each workspace gets its own independent pool.
 </Note>
 
-## Why workspaces?
+## What's shared inside a workspace
 
-- **Organization** — group related agents (e.g., "Production", "Staging", "Research team").
-- **Access control** — team members see only workspaces assigned to them.
-- **Monitoring** — view aggregated health, traces, and scores per workspace.
-- **Billing** — usage is tracked per workspace for cost attribution.
-
-## Workspace structure
-
-```
-Organization (your CelerFlow account)
-├── Workspace: Production
-│   ├── Agent: code-reviewer
-│   ├── Agent: deploy-bot
-│   └── Agent: monitoring-agent
-├── Workspace: Staging
-│   └── Agent: test-runner
-└── Workspace: Research
-    ├── Agent: data-analyst
-    └── Agent: paper-reader
-```
-
-Each account has a **default workspace** created automatically on signup.
-
-## Creating a workspace
-
-<Tabs>
-  <Tab title="Dashboard">
-    Click **New workspace** from the workspace switcher in the sidebar.
-  </Tab>
-
-  <Tab title="API">
-    ```bash
-    curl -X POST https://api.celerflow.ai/functions/v1/fleet \
-      -H "Authorization: Bearer YOUR_TOKEN" \
-      -H "Content-Type: application/json" \
-      -d '{"name": "Production"}'
-    ```
-  </Tab>
-</Tabs>
-
-## Workspace limits
-
-| Plan | Max workspaces |
+| Resource | Scoped to |
 |---|---|
-| Free | 1 |
-| Pro | 5 |
-| Team | 20 |
-| Enterprise | Unlimited |
+| Workflows | Workspace (team) |
+| Connections | Workspace (team) |
+| Runs & history | Workspace (team) |
+| Roles & membership | Workspace (team) |
 
-## Workspace switcher
-
-The sidebar includes a workspace switcher (top left) that shows:
-
-- CelerFlow logo + current workspace name
-- Your plan tier badge
-- A dropdown to search and switch between workspaces
-- Option to create a new workspace
+For connection details see [Connections](/concepts/connections). For workflow building see [Planner](/concepts/planner).

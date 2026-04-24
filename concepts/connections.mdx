@@ -1,0 +1,45 @@
+---
+title: "Connections"
+description: "Team-scoped OAuth grants powered by Composio."
+---
+
+A connection is an OAuth grant that lets your workflows act on behalf of your team in an external service — Gmail, Notion, HubSpot, Slack, or Firecrawl. Connections are shared: connect once, and every team member's workflows can use it.
+
+## How connections are scoped
+
+Connections are stored in `team_connections` and are shared across all members of the team. Composio tracks each user's connected account under the entity ID `celerflow-${userId}` for deduplication, but connection membership is team-level. You don't need to reconnect when a colleague joins.
+
+## Connecting a service
+
+<Steps>
+  <Step title="Open Settings → Connections">
+    Navigate to your workspace settings and select the Connections tab. See [Settings](/dashboard/settings).
+  </Step>
+  <Step title="Click Connect">
+    Click **Connect** next to the service you want to add. The backend starts a Composio connected account flow.
+  </Step>
+  <Step title="Complete OAuth">
+    A popup opens the provider's OAuth consent screen. Authorize access and the popup closes.
+  </Step>
+  <Step title="Wait for confirmation">
+    The frontend polls `/oauth/status` with exponential backoff — roughly 2 s → 3 s → 5 s → 8 s → 12 s, up to about 30 seconds total — until Composio reports the account as active. The card updates to **Connected** when done.
+  </Step>
+</Steps>
+
+## Stale and deleted connections
+
+If Composio returns a `404` for a connection, the UI card collapses to `missing` or `not_connected`. You'll need to reconnect.
+
+<Warning>
+  Non-404 transient errors (timeouts, 5xx) do **not** silently disconnect a connection. The UI continues treating it as valid. Only a confirmed 404 triggers the missing state.
+</Warning>
+
+## Supported integrations
+
+- [Gmail](/integration/gmail)
+- [Notion](/integration/notion)
+- [HubSpot](/integration/hubspot)
+- [Slack](/integration/slack)
+- [Firecrawl](/integration/firecrawl)
+
+The [Planner](/concepts/planner) surfaces a connection card in chat if a workflow step requires a provider that isn't connected yet. You can connect it in place without leaving the conversation.

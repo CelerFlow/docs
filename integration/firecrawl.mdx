@@ -1,0 +1,20 @@
+---
+title: "Firecrawl"
+description: "Web search and URL scraping for the Web Search and Scraper agents."
+---
+
+## What this connection enables
+
+Firecrawl is the core search provider for the **Web Search Agent** (`composio/firecrawl`) and the fetch backend for the **Scraper Agent** (`composio-firecrawl` runtime adapter). Use it to scout the web for relevant URLs and fetch full page content — it is not a general-purpose API surface.
+
+## Connect it
+
+From **Settings → Connections**, click **Connect Firecrawl**. A popup runs OAuth and the card flips to **Connected** once Composio confirms. See [Connections](/concepts/connections) for scope, stale-account handling, and polling behavior.
+
+## Scopes and permissions
+
+Firecrawl is an API-key-based Composio integration with no user-facing OAuth scopes. Composio manages the key on your behalf after you connect.
+
+## Known limitations
+
+Scout and fetch are the only supported operations in v0. Rate limits are enforced by Composio and depend on your plan.

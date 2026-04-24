@@ -13,7 +13,7 @@ Every existing docs page either describes the dead product or needs substantial 
 
 ## New positioning
 
-> **CelerFlow** — chat-driven workflow automation. Describe what you want, connect your tools, ship it.
+The marketing site's hero is **"Say it once. It's done."** with the supporting line **"Tell CelerFlow what you need in plain English. No code, no config, no drag-and-drop."** Docs should echo this voice, not invent a new tagline. `index.mdx` leads with that headline.
 
 The `index.mdx` hero, quickstart framing, and every reference to "governance / observability / kill switch" in the current docs go away. New pillars:
 
@@ -87,14 +87,15 @@ Define a workflow = a named DAG of steps, owned by a team, with a lifecycle: `dr
 Explain the chat-driven builder in terms of the five-phase order from the planner system prompt: clarify goal and destination → discover pool agents → draft the plan → gate on OAuth connections → deploy. The planner is a LangGraph pipeline with four nodes (intent → match → assemble → validate). When the user asks to deploy, the frontend calls `generateWorkflowPlan` then `deployWorkflow`. Call out that the planner will pause the conversation for human input at known HITL points (see Approvals). Also note the re-deploy behavior: reusing an existing `workflow_id` replaces the draft in place.
 
 **`concepts/platform-agents.mdx` — Platform agents (new; replaces old agents.mdx)**
-Capability layer. Lists the seven default agents from `backend/railway-flow/src/routes/agent-pool/defaults.ts`, each with one-line purpose + what it consumes + what it produces + any attached tools or skills:
+Capability layer. Lists the eight default agents registered under `backend/railway-flow/src/lib/platform-agents/` (and seeded via `routes/agent-pool/defaults.ts`), each with one-line purpose + what it consumes + what it produces + any attached tools or skills:
 
 - **Web Search** — scouts the web; uses Composio Firecrawl search; skill `source-evaluation`.
+- **Scraper** — fetches and cleans a specific URL for downstream steps.
 - **Summarize** — condenses content; no tools.
 - **Extract** — pulls structured fields from content.
-- **Archive** — emits or files the final result; uses Composio Gmail send and file_writer paths.
 - **Analyze** — produces structured markdown synthesis; skill `analyze-style`.
 - **Translate** — translates content; skill `translate-style`.
+- **Archive** — emits or files the final result; uses Composio Gmail send paths.
 - **File Writer** — writes to platform storage, Obsidian, or S3; tool `obsidian-formatter`.
 
 Explain that agents are seeded per team on workspace creation and picked by the planner during assembly. Users don't configure agents directly in v0; this is a capability pool, not a tool palette.
@@ -137,7 +138,7 @@ A walkthrough of the New workflow chat screen. Covers: how to phrase intent (tri
 First half: the Executions list and the dashboard home workflow list. Status badges and their meanings (draft, ready, running, completed, failed). Sorting and recent-runs context. Second half: the workflow detail page. Run history (last 20, newest first), step-level logs with duration and errors, result markdown rendering, rerun button, dispatch-failed banner, and how realtime updates behave while you're watching a run.
 
 **`dashboard/settings.mdx` — Settings (new)**
-Index page linking to each settings sub-surface actually present in the UI: Connections, Team, API keys, Billing, Audit log, Notifications, Appearance. One-line per sub-surface. Deep-link each to either its concept page (Connections → concepts/connections) or platform page (Billing → platform/billing).
+Index page linking to each settings sub-surface present in `frontend/src/app/(dashboard)/[slug]/settings/`: **Connections, Team, API keys, Billing, Audit, Notifications, Appearance**. One-line per sub-surface. Deep-link each to either its concept page (Connections → concepts/connections) or platform page (Billing → platform/billing). Note: `mcp-proxy` and `mcp-servers` settings routes exist in code; before publishing, confirm whether they are still wired and reachable from the Settings nav — if yes, document them minimally; if dead, ignore and let code cleanup handle them.
 
 ### Platform (4 pages)
 
@@ -145,7 +146,7 @@ Index page linking to each settings sub-surface actually present in the UI: Conn
 Execution-count quota model, usage metrics shown in Settings → Billing, upgrade path. Confirm wording against the live Billing view before finalizing.
 
 **`platform/teams-rbac.mdx` — Teams & roles (rewrite)**
-Member list, invite flow, role tiers. During writing, read the roles actually shipped in `team_members` before locking in tier names and permission matrix. Do not invent roles that don't exist in code.
+Member list, invite flow, four role tiers confirmed from `backend/supabase/functions/team/index.ts`: **owner**, **admin**, **operator**, **viewer**. Owner is assigned on team creation; admin can change member roles; operator/viewer scoping to be confirmed from the route guards when writing. Invite flow via the Settings → Team page.
 
 **`platform/audit-log.mdx` — Audit log (rewrite, renamed from audit-export.mdx)**
 Renamed because the current code appears to surface an audit log view but not an export button. Confirm during writing. If export does exist, re-add the export section; if not, leave as read-only log and note export as a roadmap item.

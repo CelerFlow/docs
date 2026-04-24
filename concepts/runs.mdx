@@ -1,0 +1,43 @@
+---
+title: "Runs & executions"
+description: "What happens when a workflow actually runs."
+---
+
+A run is one execution of a workflow. Every run is persisted, ordered, and streamed back to your browser in real time. If something goes wrong, the failure is surfaced precisely — not as a generic error.
+
+## Data model
+
+Each run is a row in `workflow_runs`. Each step within that run is a row in `workflow_steps`. Steps are ordered by their position in the DAG and execute sequentially once their upstream dependencies resolve.
+
+### Step lifecycle
+
+```
+pending → running → completed
+                 ↘ failed
+```
+
+A step moves from `pending` to `running` when it starts, then to `completed` or `failed` when the agent finishes. A failed step stops the run.
+
+## Orchestration
+
+Runs are dispatched to a Trigger.dev task named `celerflow-workflow-run`. As each step progresses, Trigger.dev calls a webhook that updates the `workflow_steps` and `workflow_runs` rows. That's what drives the status transitions you see in the UI.
+
+## Real-time updates
+
+The UI subscribes to run progress via Supabase Realtime. Each open browser tab gets a channel with a unique subscriber suffix — so if you have the same workflow open in two tabs, they don't overwrite each other's state.
+
+## Run result
+
+When a run completes, a `result_markdown` field is written to the run record. This is rendered on the run detail page. See [Executions](/dashboard/executions) for the UI surface.
+
+## Rerun and dispatch failures
+
+**Rerun** — triggering a rerun queues a new deploy command and starts a fresh run record. Previous run history is preserved.
+
+**Dispatch failure** — if Trigger.dev can't accept the dispatch (capacity, network, or config issue), the UI shows a `dispatch_failed` banner on the run detail page. This is a named error state, not a generic 500.
+
+<Info>
+  The `dispatch_failed` state means CelerFlow could not hand the run off to Trigger.dev. It does not mean the workflow itself has a bug. Retrying the run is safe.
+</Info>
+
+For the full execution UI, see [Executions](/dashboard/executions). For workflow lifecycle states, see [Workflows](/concepts/workflows).

@@ -1,0 +1,20 @@
+---
+title: "Notion"
+description: "Write workflow results directly into a Notion database or page."
+---
+
+## What this connection enables
+
+The **File Writer Agent** uses Notion as a persistence destination. After a workflow completes, results are written to a Notion database or page you specify — keeping your deliverables where your team already works.
+
+## Connect it
+
+From **Settings → Connections**, click **Connect Notion**. A popup runs OAuth and the card flips to **Connected** once Composio confirms. See [Connections](/concepts/connections) for scope, stale-account handling, and polling behavior.
+
+## Scopes and permissions
+
+Notion requires write access to the selected workspace or parent page. During OAuth you choose which pages the integration can see; only those pages are accessible to your workflows.
+
+## Known limitations
+
+Before any workflow that writes to Notion can run, the Planner pauses and asks you to pick a target database or page. Placeholder IDs are not accepted — you must confirm a real destination. See [Approvals](/concepts/approvals).

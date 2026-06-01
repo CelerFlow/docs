@@ -4,38 +4,38 @@ description: "Build your first workflow in five minutes — no CLI required."
 ---
 
 <Info>
-  **Prerequisites**: a CelerFlow account at [celerflow.vercel.app](https://celerflow.vercel.app) and a Gmail account you're willing to OAuth. Nothing to install locally.
+  **Prerequisites**: a CelerFlow account at [celerflow.ai](https://celerflow.ai) and a Gmail account you're willing to OAuth. Nothing to install locally.
 </Info>
 
 ## Build your first workflow
 
 <Steps>
   <Step title="Sign in and create a workspace">
-    Go to [celerflow.vercel.app](https://celerflow.vercel.app), sign in, and complete onboarding. Pick a use-case and give the workspace a name. Your default platform agents are seeded automatically.
+    Go to [celerflow.ai](https://celerflow.ai), sign in, and complete onboarding. Pick a use-case and give the workspace a name. Your default platform agents are seeded into the team agent pool automatically.
   </Step>
 
   <Step title="Connect Gmail">
-    From **Settings → Connections**, click **Connect Gmail**. A popup runs Google OAuth. The card flips to **Connected** once the connection is confirmed — usually within a few seconds.
+    Open **Apps** from the sidebar and click **Connect Gmail**. A popup runs Google OAuth. The card flips to **Connected** once the connection is confirmed — usually within a few seconds.
   </Step>
 
-  <Step title="Open a new workflow">
-    From the dashboard, click **New workflow**. Describe the outcome in one or two sentences. For example:
+  <Step title="Start a new chat">
+    Click **New chat** in the sidebar. Describe the outcome in one or two sentences. For example:
 
-    > When a new inbound lead email arrives, summarize it and file it to my Leads Notion database.
+    > Every morning, search for the latest AI policy news, summarize the top stories, and email me the digest.
 
-    Be specific about the trigger, the action, and the destination.
+    Be specific about what to do and where the result should land.
   </Step>
 
   <Step title="Answer the Planner's follow-ups">
-    The Planner may ask a clarifying question, surface a connection card if another tool is missing, or pause to let you pick a Notion target. Answer in chat or complete the connection. See [Approvals](/concepts/approvals) for what each pause means.
+    The Interview agent may ask a clarifying question, then produce a **Requirement Brief** that summarizes your goal. Confirm the brief and the Planner assembles a draft workflow. If a required app isn't connected, a connection card appears in chat — connect it in place. See [Approvals](/concepts/approvals) for what each pause means.
   </Step>
 
   <Step title="Confirm and deploy">
-    When the draft looks right, the Planner asks **"Ready to deploy?"**. Confirm it and the workflow goes live. Redeploying later upgrades the same workflow in place — no duplicates.
+    Review the draft DAG on the canvas. When it looks right, the Planner asks **"Ready to deploy?"**. Confirm it and the workflow goes live. Redeploying later upgrades the same workflow in place — no duplicates.
   </Step>
 
   <Step title="Watch it run">
-    Open the workflow from the dashboard to see run history, step-level logs, and the result. Updates stream in real time. See [Executions](/dashboard/executions) for the full detail view.
+    Open the workflow from the sidebar to see run history, step-level logs, and the result. Updates stream in real time over Supabase Realtime. See [Executions](/dashboard/executions) for the full detail view.
   </Step>
 </Steps>
 
@@ -46,7 +46,15 @@ description: "Build your first workflow in five minutes — no CLI required."
     The lifecycle of a workflow — draft, deploy, run, rerun.
   </Card>
 
+  <Card title="Trigger it automatically" icon="bolt" href="/concepts/triggers">
+    Run on a schedule, from a webhook, or via an API key instead of by hand.
+  </Card>
+
   <Card title="Building in chat" icon="comments" href="/dashboard/building-a-workflow">
     A deeper walkthrough of the chat builder, one step at a time.
+  </Card>
+
+  <Card title="BioMed research pack" icon="flask" href="/concepts/biomed">
+    PubMed-grounded research workflows for life-science teams.
   </Card>
 </CardGroup>

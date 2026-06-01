@@ -1,20 +1,18 @@
 ---
 title: "Firecrawl"
-description: "Web search and URL scraping for the Web Search and Scraper agents."
+description: "Platform-managed web search and page extraction for the research agents."
 ---
 
-## What this connection enables
+## What this enables
 
-Firecrawl is the core search provider for the **Web Search Agent** (`composio/firecrawl`) and the fetch backend for the **Scraper Agent** (`composio-firecrawl` runtime adapter). Use it to scout the web for relevant URLs and fetch full page content — it is not a general-purpose API surface.
+Firecrawl is the web-search and page-extraction backend for the **Web Search Agent** and the **Scraper Agent**. Use it to scout the web for relevant URLs and fetch full page content.
 
-## Connect it
+## No connection required
 
-From **Settings → Connections**, click **Connect Firecrawl**. A popup runs OAuth and the card flips to **Connected** once Composio confirms. See [Connections](/concepts/connections) for scope, stale-account handling, and polling behavior.
+Firecrawl is **platform-managed** — CelerFlow owns the credentials and billing. There's nothing to connect and no card on the **Apps** page; the Planner can use web search and extraction in any workspace out of the box. The same applies to Tavily, an additional platform-managed search provider.
 
-## Scopes and permissions
-
-Firecrawl is an API-key-based Composio integration with no user-facing OAuth scopes. Composio manages the key on your behalf after you connect.
+See [Connections — platform-managed capabilities](/concepts/connections#platform-managed-capabilities).
 
 ## Known limitations
 
-Scout and fetch are the only supported operations in v0. Rate limits are enforced by Composio and depend on your plan.
+Search and fetch are the supported operations. Rate limits and throughput are managed by the platform. For social-timeline content, the Planner routes to the appropriate collector rather than scraping profile URLs directly.

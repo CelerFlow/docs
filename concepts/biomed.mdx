@@ -1,0 +1,50 @@
+---
+title: "BioMed research pack"
+description: "PubMed-grounded research workflows: search, triage, PDF retrieval, and Zotero export."
+---
+
+The BioMed research pack is a dedicated set of seven [platform agents](/concepts/platform-agents) for life-science teams. It takes a biomedical question all the way from a PubMed search strategy to a Zotero-ready library of triaged papers with PDFs attached — including paywalled PDFs captured through your own browser session.
+
+<Note>
+  The BioMed pack is gated behind a paid plan. It is **not available on Free**; it is included on **Pro, Team, and Enterprise**. See [Billing](/platform/billing).
+</Note>
+
+## When the Planner uses it
+
+You don't pick the pack manually. When your request is grounded in PubMed / clinical literature — "find recent RCTs on…", "build a reading list on…" — the Planner reaches for these agents instead of the general-purpose web pipeline.
+
+## The seven agents
+
+| Agent | Role | What it does |
+|---|---|---|
+| `biomed_query_planner_agent` | analyzer | Turns a research topic into a reviewable PubMed search strategy. |
+| `pubmed_search_agent` | collector | Searches PubMed via NCBI E-utilities and returns authoritative paper metadata. |
+| `paper_triage_agent` | analyzer | Ranks candidate papers against your topic and explains why each one matters. |
+| `citation_metadata_resolver_agent` | collector | Backfills missing citation metadata (DOI, PMID, PMC) for raw citations. |
+| `pdf_access_resolver_agent` | collector | Determines whether a paper has an open-access / PMC PDF, or needs browser capture. |
+| `institutional_access_agent` | collector | Creates a browser handoff session for papers behind a paywall or institutional login. |
+| `zotero_library_agent` | sink | Prepares a Zotero RDF import bundle with the selected papers and PDF attachments. |
+
+## The typical pipeline
+
+```
+biomed_query_planner → pubmed_search → paper_triage
+  → pdf_access_resolver → [institutional_access for paywalled]
+  → zotero_library
+```
+
+1. **Plan the search** — your topic becomes a structured, reviewable PubMed query.
+2. **Search & triage** — PubMed returns candidates; triage ranks and explains them.
+3. **Resolve PDFs** — open-access and PMC PDFs are fetched directly; paywalled ones are routed to a browser handoff.
+4. **Capture paywalled PDFs** — you grab them in your own authenticated browser via the extension; the run resumes automatically.
+5. **Export to Zotero** — the result is a Zotero RDF bundle you can import, papers and attachments included.
+
+## Browser handoff
+
+Step 4 is the only place a live run pauses for a human. CelerFlow does not bypass publisher access controls — paywalled PDFs are captured in *your* session, on your authority, through the [browser extension](/dashboard/browser-extension). See [Approvals](/concepts/approvals) for how the handoff pauses and resumes a run.
+
+## See also
+
+- [Platform agents](/concepts/platform-agents) — the full capability pool, including the general-purpose pack.
+- [Browser extension](/dashboard/browser-extension) — installing and using the handoff extension.
+- [Billing](/platform/billing) — which plans include the BioMed pack.

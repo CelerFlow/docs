@@ -9,7 +9,7 @@ The **Archiver Agent** uses Slack as a delivery destination. When a workflow com
 
 ## Connect it
 
-From **Settings → Connections**, click **Connect Slack**. A popup runs OAuth and the card flips to **Connected** once Composio confirms. See [Connections](/concepts/connections) for scope, stale-account handling, and polling behavior.
+From **Apps**, click **Connect Slack**. A popup runs OAuth and the card flips to **Connected** once Composio confirms. See [Connections](/concepts/connections) for scope, stale-account handling, and polling behavior.
 
 ## Scopes and permissions
 
@@ -17,4 +17,4 @@ Slack access is scoped to posting messages to channels the OAuth user can see. T
 
 ## Known limitations
 
-**Beta.** Some Slack delivery flows still route through a `coming_soon` path, and legacy `slack_not_connected` copy appears in parts of the UI. See [Roadmap](/platform/roadmap) for where this is heading.
+Slack delivery works end-to-end through the Archiver Agent. What's still being polished is the in-chat experience: after you connect Slack mid-build, the Planner doesn't yet auto-resume on the OAuth-completion signal the way Gmail and Notion do. See [Roadmap](/platform/roadmap).

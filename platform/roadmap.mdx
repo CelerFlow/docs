@@ -5,21 +5,30 @@ description: "What's shipping next and what's being considered."
 
 CelerFlow is in public beta. This page tracks where the product is going. Confidence levels are honest — "Shipping next" is funded and in flight; "Considering" is on the table but not committed.
 
+## Recently shipped
+
+- **Triggers** — schedule, webhook, and API triggers are live. See [Triggers](/concepts/triggers).
+- **Apps surface** — a top-level page to connect Composio apps and first-party MCP integrations like Attio. See [Connections](/concepts/connections).
+- **BioMed research pack** — PubMed-grounded research with Zotero export and browser-handoff PDF capture. See [BioMed research pack](/concepts/biomed).
+
 ## Shipping next
 
 - **Public REST API** — programmatically trigger workflows, fetch runs, and list workflows. API keys already exist; the HTTP surface is stabilizing. See [API reference](/api-reference/introduction).
-- **Full Settings UI** — team management, API keys, audit log, notifications, and appearance surfaces are being wired into the Settings navigation.
-- **Scheduled workflow triggers** — cron-style schedules so workflows can run on their own without a manual or inline trigger.
+- **Full Settings UI** — team management, API keys, notifications, and appearance surfaces are being wired into the navigation.
+- **Slack in-chat auto-resume** — Slack delivery works today; the build doesn't yet auto-resume on the Slack OAuth-completion signal the way Gmail and Notion do.
+- **External-event triggers** — let a connected app emit an event that starts a workflow (config scaffolding exists; inbound dispatch is in progress).
+- **Node-level pause / resume** — general human-in-the-loop checkpoints mid-run, beyond today's browser handoff.
 
 ## Considering
 
-- **More providers** — Google Drive, GitHub, Linear, Google Calendar, and other Composio-backed integrations.
+- **More providers** — additional Composio-backed integrations and first-party MCP servers.
+- **MCP servers in the agent pool** — expose connected MCP servers as first-class workflow capabilities.
 - **Workflow templates marketplace** — pre-built workflows you can clone instead of describing from scratch.
-- **MCP gateway** — expose MCP servers and an MCP proxy as a first-class workflow capability.
 - **Self-hosted / Docker distribution** — run CelerFlow on your own infrastructure.
 - **Team ownership transfer** — move the owner role to another member without recreating the team.
 
 ## Not on the roadmap
 
 - **Tool-call-level tracing** — CelerFlow's telemetry is run-scoped and step-scoped, not per-tool-call. See [Runs & executions](/concepts/runs).
+- **Agent governance product** — service-permission gating, approval/score/wallet, and an MCP proxy were earlier directions that have been retired.
 - **OpenClaw plugin distribution** — CelerFlow is no longer a plugin for external agent runtimes.

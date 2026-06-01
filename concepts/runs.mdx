@@ -3,7 +3,7 @@ title: "Runs & executions"
 description: "What happens when a workflow actually runs."
 ---
 
-A run is one execution of a workflow. Every run is persisted, ordered, and streamed back to your browser in real time. If something goes wrong, the failure is surfaced precisely — not as a generic error.
+A run is one execution of a workflow. A run can be started manually, on a schedule, or from a webhook or API [trigger](/concepts/triggers). Every run is persisted, ordered, and streamed back to your browser in real time. If something goes wrong, the failure is surfaced precisely — not as a generic error.
 
 ## Data model
 
@@ -20,7 +20,9 @@ A step moves from `pending` to `running` when it starts, then to `completed` or 
 
 ## Orchestration
 
-Runs are dispatched to a Trigger.dev task named `celerflow-workflow-run`. As each step progresses, Trigger.dev calls a webhook that updates the `workflow_steps` and `workflow_runs` rows. That's what drives the status transitions you see in the UI.
+Runs are dispatched to a Trigger.dev task named `celerflow-workflow-run`. Trigger.dev only orchestrates — it walks the node list, handles retries, and calls back a webhook that updates the `workflow_steps` and `workflow_runs` rows. The actual agent work always runs on Railway, never inside Trigger.dev. That callback is what drives the status transitions you see in the UI.
+
+A step can also **fan out** over an array, running its agent on each element with bounded concurrency and aggregating the results into one output.
 
 ## Real-time updates
 

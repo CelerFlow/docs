@@ -7,7 +7,7 @@ A workspace is the top-level boundary in CelerFlow. Everything you build — wor
 
 ## What a workspace is
 
-In the database each workspace is a single row in `agent_fleets`, accessed via a `[slug]` segment in the URL (e.g. `/{slug}/dashboard`). The slug is stable; bookmark it and share it with teammates.
+In the database each workspace is a single row in `agent_fleets`, accessed via a `[slug]` segment in the URL (e.g. `/{slug}/workflow/new`). The slug is derived from the workspace name. The shorthand `/~/...` resolves to your first workspace and redirects to its slug, so links don't have to hardcode it.
 
 A workspace is bound to exactly one team. Every team member sees the same workflows, connections, and run history. Access is controlled by role — see [Teams & roles](/platform/teams-rbac) for details.
 
@@ -40,7 +40,8 @@ Use the workspace picker in the top navigation bar to switch between workspaces.
 | Resource | Scoped to |
 |---|---|
 | Workflows | Workspace (team) |
-| Connections | Workspace (team) |
+| Connections (Apps) | Workspace (team) |
+| Triggers | Workspace (team) |
 | Runs & history | Workspace (team) |
 | Roles & membership | Workspace (team) |
 

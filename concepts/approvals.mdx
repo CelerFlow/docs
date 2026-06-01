@@ -1,34 +1,32 @@
 ---
 title: "Approvals"
-description: "Human-in-the-loop pause points and the team confirmations channel."
+description: "Human-in-the-loop pause points where CelerFlow waits for you to act."
 ---
 
-Not every step runs automatically. CelerFlow has three points where it stops and waits for a human to act before continuing. These aren't blockers — they're guardrails that keep workflows from running with missing credentials or wrong targets.
+Not everything runs untouched. CelerFlow has a few points where it stops and waits for a human before continuing. These aren't friction — they're guardrails that keep workflows from running with missing credentials, wrong targets, or paywalled content the system shouldn't grab on its own.
 
-## The three pause types
+There are two kinds of human-in-the-loop (HITL): **build-time** gates that pause while you're authoring, and **run-time** handoffs that pause a live run.
 
-### 1. OAuth gate
+## Build-time gates
 
-If a workflow step requires a service that isn't connected to the team, the [Planner](/concepts/planner) pauses before deploying and surfaces a connection card directly in the chat. Connect the service in place, and the Planner resumes.
+### 1. Connection gate
 
-This pause happens at plan-time, before the workflow is deployed. A run won't be queued until all required connections are present. See [Connections](/concepts/connections).
+If a workflow step needs an app that isn't connected to your team, the [Planner](/concepts/planner) pauses before deploying and surfaces a connection card directly in the chat. Connect the app in place and the build resumes. A run is never queued until all required connections are present. See [Connections](/concepts/connections).
 
-### 2. Notion target selection
+### 2. Delivery target selection
 
-Before any workflow that writes to Notion is deployed, the Planner asks which Notion database or page to write into. You must supply a real target — placeholder IDs are validated and rejected, and the Planner asks again until a valid target is confirmed.
+Before a workflow that writes to a destination like Notion is deployed, the Planner asks which database or page to write into. You must supply a real target — placeholder IDs are validated and rejected, and the Planner asks again until a valid target is confirmed. This prevents workflows from deploying with an unresolved destination. See [Integrations — Notion](/integration/notion).
 
-This prevents workflows from deploying with an unresolved destination. See [Integrations — Notion](/integration/notion).
+## Run-time handoff
 
-### 3. Team confirmations
+### 3. Browser handoff (institutional access)
 
-Pending approvals and resolved events are broadcast on the Supabase channel `team:${teamId}:confirmations`. Any dashboard tab subscribed to this channel receives approval events in real time without polling.
+The one place a live run pauses for you is the BioMed **browser handoff**. When a workflow needs a PDF that sits behind a paywall or institutional login, the `institutional_access_agent` creates a handoff session and waits. You capture the PDF in your own already-authenticated browser via the CelerFlow extension, and the run resumes automatically. CelerFlow never bypasses a publisher's access controls — the capture happens in your session, on your authority. See [Browser extension](/dashboard/browser-extension).
 
-This powers the confirmations surface on the dashboard — the feed where you can see which workflows are waiting and act on them directly.
+<Note>
+  General node-level pause / resume — stopping mid-run for arbitrary step approval — is not available yet. If a run fails, you re-run it from the detail page. The browser handoff above is the only online run-time HITL path today.
+</Note>
 
 ## Who can approve
 
-Approval permissions are scoped by team role. Only members with sufficient role can resolve a pending confirmation. See [Teams & roles](/platform/teams-rbac) for the full role matrix.
-
-<Note>
-  Approvals in v0 cover connection gates and Notion target selection. More approval types — such as step-level review before a workflow proceeds — are planned for future releases.
-</Note>
+Approval actions are scoped by team role. Only members with a sufficient role can build, deploy, or resolve a gated workflow. See [Teams & roles](/platform/teams-rbac) for the full role matrix.

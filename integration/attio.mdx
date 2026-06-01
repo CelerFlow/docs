@@ -1,0 +1,25 @@
+---
+title: "Attio"
+description: "Read, create, and update Attio CRM records, notes, and tasks from your workflows."
+---
+
+## What this connection enables
+
+Attio lets your workflows read, create, and update records, notes, and tasks in your Attio CRM. It can act as both a data source and a delivery target — for example, enriching a record from web research or filing a summary as a note.
+
+## A first-party MCP integration
+
+Attio is CelerFlow's first **first-party MCP** integration. Unlike the Composio-brokered apps, CelerFlow runs the OAuth and Model Context Protocol connection to Attio directly. From your side the experience is the same — connect once from **Apps** — but under the hood the connection is stored with `source = first_party_mcp` rather than `composio`. See [Connections](/concepts/connections) for the two-source model.
+
+## Connect it
+
+From **Apps**, click **Connect Attio**. A popup runs Attio's OAuth consent (PKCE) and the card flips to **Connected** once the grant is authorized. The connection is team-scoped and shared with your teammates.
+
+## Scopes and permissions
+
+The grant covers MCP access to your Attio workspace — reading and writing records, notes, and tasks. CelerFlow refreshes the access token automatically as needed.
+
+## See also
+
+- [Connections](/concepts/connections) — how `composio` and `first_party_mcp` sources differ.
+- [Planner](/concepts/planner) — how connected apps get driven during a build.

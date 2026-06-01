@@ -1,0 +1,37 @@
+---
+title: "Browser extension"
+description: "Capture paywalled PDFs in your own browser session so BioMed workflows can continue."
+---
+
+The CelerFlow browser extension powers **browser handoff** — the mechanism that lets a [BioMed](/concepts/biomed) workflow obtain a PDF that sits behind a paywall or institutional login, without CelerFlow ever bypassing the publisher's access controls.
+
+## Why it exists
+
+When a BioMed run reaches a paper whose PDF isn't openly available, the `institutional_access_agent` creates a handoff session and pauses the run. Rather than scraping around the paywall, CelerFlow asks *you* to fetch the file in a browser where you're already authenticated — through your library proxy or institutional login. The capture happens on your authority, in your session.
+
+## How a handoff works
+
+<Steps>
+  <Step title="A run pauses">
+    A BioMed workflow hits a paywalled paper and opens a handoff session. The workflow waits.
+  </Step>
+  <Step title="You capture the PDF">
+    With the extension installed, open the paper in your authenticated browser. The extension captures the PDF and sends it back to the workflow.
+  </Step>
+  <Step title="The run resumes">
+    CelerFlow attaches the captured PDF and the workflow continues automatically — on to triage, citation resolution, and Zotero export.
+  </Step>
+</Steps>
+
+## Install and configure
+
+Open the **Browser extension** settings page (`/{slug}/settings/extension`) for the install link and setup steps. Once installed, the extension links to your workspace so handoff sessions route to the right account.
+
+## Availability
+
+The browser handoff extension is available on **all plans**, including Free. The BioMed agents that create handoff sessions, however, require a paid plan — see [Billing](/platform/billing).
+
+## See also
+
+- [BioMed research pack](/concepts/biomed) — where browser handoff fits in the pipeline.
+- [Approvals](/concepts/approvals) — handoff is the one run-time human-in-the-loop pause.

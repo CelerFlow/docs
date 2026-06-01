@@ -1,0 +1,66 @@
+---
+title: "Triggers"
+description: "How a deployed workflow starts — manually, on a schedule, from a webhook, or via the API."
+---
+
+A trigger is how an external signal becomes a workflow run. Once a workflow is deployed, you attach one or more triggers to control when and how it runs. Every inbound signal is validated, deduplicated, and recorded before it becomes a `workflow_run` dispatched to the execution plane.
+
+## Trigger types
+
+| Type | How it starts | Auth | Status |
+|---|---|---|---|
+| **Manual** | Run or rerun from the workflow detail page | Your session | Available |
+| **Schedule** | A cron schedule runs it automatically | Internal | Available |
+| **API** | `POST` to the workflow's API trigger endpoint | Bearer `cfk_` key | Available |
+| **Webhook** | An external system `POST`s to a per-workflow URL | HMAC-SHA256 signature | Available |
+| **External event** | A connected app emits an event | — | Coming soon |
+
+## Schedule
+
+Schedule triggers run a workflow on a cron-style cadence — every morning, every hour, every Monday. Schedules are registered with Trigger.dev, which calls back into CelerFlow when each occurrence fires. You can pause and resume a schedule without editing the workflow; changing the cadence itself is done from the workflow's trigger settings.
+
+## API trigger
+
+An API trigger exposes a workflow as an endpoint you can call from your own code:
+
+```
+POST /triggers/api/{triggerId}
+Authorization: Bearer cfk_xxx
+Content-Type: application/json
+
+{ "payload": { ... } }
+```
+
+- Each workflow can have **one** API trigger.
+- The key format is `cfk_…`. Treat it like a password — anyone with the key can start runs.
+- The request body is passed to the workflow as trigger context (see [Binding trigger data](#binding-trigger-data)).
+
+## Webhook trigger
+
+A webhook trigger gives a workflow a unique inbound URL that external systems can call when an event happens:
+
+```
+ALL /triggers/webhook/{urlToken}
+```
+
+- The URL contains an unguessable token (`whk_…`).
+- Requests must carry a valid **HMAC-SHA256 signature** computed from the raw body and the trigger's signing secret. Unsigned or mis-signed requests are rejected.
+- By default only `POST` is accepted; you can widen the allowed methods.
+- A replay window (default 300 seconds) and delivery deduplication protect against replayed or duplicated events.
+
+<Warning>
+  Keep your webhook signing secret and API keys server-side. Rotating a secret invalidates signatures computed with the old one, so update senders when you rotate.
+</Warning>
+
+## Binding trigger data
+
+Inbound trigger payloads are injected into the run as a `_trigger` context. Steps can bind to `_trigger.payload.*` to use values from the incoming event — for example, the email address or record ID that fired the webhook. Bindings degrade gracefully when a field is absent.
+
+## Deliveries
+
+Every inbound webhook or API call is recorded as a **delivery** (`trigger_deliveries`) with its payload and outcome. Deliveries power deduplication and let you trace which event produced which run.
+
+## See also
+
+- [Workflows](/concepts/workflows) — how a workflow reaches the `active` state where triggers apply.
+- [Runs & executions](/concepts/runs) — what happens after a trigger fires.

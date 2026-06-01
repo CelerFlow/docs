@@ -1,88 +1,109 @@
 ---
 title: "Platform agents"
-description: "The eight built-in capabilities the Planner assembles into a workflow."
+description: "The capability pool the Planner assembles into a workflow."
 ---
 
-Platform agents are the capability pool the [Planner](/concepts/planner) draws from when it assembles a workflow. In v0 you don't configure agents directly — you describe an outcome, and the Planner picks the right agents and wires them together.
+Platform agents are the capability pool the [Planner](/concepts/planner) draws from when it assembles a workflow. You don't configure agents directly — you describe an outcome, and the Planner picks the right agents and wires them together. Each agent encapsulates one capability with a typed contract, so the Planner can compose without ever calling a third-party API itself.
 
-When a workspace is created, `ensureDefaultTeamPoolAgents()` seeds all eight agents into `team_pool_agents` automatically. One of them — the `analyze_agent` — is flagged `is_default_planner`.
+When a workspace is created, the default agents are seeded into your team's agent pool (`team_pool_agents`) automatically, so the Planner can start building immediately.
 
-## The eight agents
+## The four planner roles
+
+Every agent declares a role that governs how it can be wired into the DAG:
+
+| Role | Meaning | Terminal? |
+|---|---|---|
+| `collector` | Pulls raw material from the outside world (search, scrape, fetch). | No |
+| `transformer` | Converts text or data into a different shape (extract, summarize, translate). | No |
+| `analyzer` | Cross-context synthesis or local reasoning. | No |
+| `sink` | Writes the workflow's final output somewhere. | Yes |
+
+Collectors feed transformers and analyzers; those feed sinks; sinks terminate the graph. The validator enforces this — for example, it won't let a collector feed a sink directly when a transformer or analyzer is available.
+
+## General-purpose pack
+
+These eight agents cover generic web research and content pipelines.
 
 <AccordionGroup>
-  <Accordion title="Analyze Agent (analyze_agent)">
-    Cross-compares multiple upstream contexts and produces a structured analytical narrative with citations, synthesized conclusions, and open research questions. Built on the `analyze-style` skill.
+  <Accordion title="Web Search Agent (web_search_agent) · collector">
+    Searches the public web and retrieves page content for downstream research. Backed by Firecrawl, with optional enrichment from additional search providers and source-evaluation scoring.
 
-    **Consumes:** multiple text contexts from upstream steps (e.g. extracted records, scraped content)  
-    **Produces:** `synthesis` (markdown narrative), `themes` (array), `comparisons` (array), `open_questions` (array)  
-    **Skill:** `analyze-style`
+    **Produces:** `result_urls` (`url_list`), `results_compact_text` / `scraped_text_corpus` (`content_corpus`), `scraped_pages` (`page_list`), `results` (`document_list`)
+    **Anti-purpose:** not for social-timeline extraction.
+
+    See [Integrations — Firecrawl](/integration/firecrawl).
   </Accordion>
 
-  <Accordion title="Archiver Agent (archiver_agent)">
-    Atomic delivery agent. Delivers content via `workflow_detail`, Gmail, or Slack. Use this as the terminal sink when you want to send or surface a result rather than create a durable file.
+  <Accordion title="Scraper Agent (scraper_agent) · collector">
+    Deprecated collector for explicit, URL-only scraping. Takes a list of URLs and returns extracted markdown.
 
-    **Consumes:** summary text or synthesis strings from upstream agents  
-    **Produces:** `status` (delivery status)  
-    **Destinations:** `workflow_detail`, Gmail, Slack  
-    **Runtime adapter:** `composio-delivery`
+    **Consumes:** a `url_list`
+    **Produces:** `scraped_pages` (`page_list`), `scraped_text_corpus` (`content_corpus`)
+    **Anti-purpose:** not a search engine, and not part of default research workflows — prefer `web_search_agent`. Cannot target `x.com` / `twitter.com` profile URLs.
+  </Accordion>
+
+  <Accordion title="Extractor Agent (extractor_agent) · transformer">
+    Converts unstructured text into structured fields using the platform LLM.
+
+    **Consumes:** raw text or scraped corpus
+    **Produces:** `extracted` (`structured_data`), `extraction_notes`
+    **Anti-purpose:** not a summarizer, not a final report writer.
+  </Accordion>
+
+  <Accordion title="Summarize Agent (summarize_agent) · transformer">
+    Condenses arbitrary input text into a summary and key points.
+
+    **Consumes:** a `content_corpus`, `summary_text`, or `synthesis_text`
+    **Produces:** `summary` (`summary_text`), `key_points` (`bullet_list`)
+  </Accordion>
+
+  <Accordion title="Translate Agent (translate_agent) · transformer">
+    Translates one string or a batch of strings into a target locale through one unified API, preserving proper nouns, code blocks, markdown, URLs, and emoji.
+
+    **Consumes:** one or more source strings
+    **Produces:** `translated_text` (scalar), `translations` (ordered array)
+  </Accordion>
+
+  <Accordion title="Analyze Agent (analyze_agent) · analyzer">
+    Single-text reasoning and multi-context synthesis for report-grade narratives. Cross-compares upstream contexts and produces a structured analysis.
+
+    **Produces:** `synthesis` (`synthesis_text`), `themes`, `comparisons`, `open_questions`
+    **Anti-purpose:** not a summarizer, not a final report writer.
+  </Accordion>
+
+  <Accordion title="File Writer Agent (file_writer_agent) · sink">
+    Creates durable file or page artifacts. Each destination runs independently; a failure at one does not block the others.
+
+    **Consumes:** `final_content` (`summary_text` / `synthesis_text` / `final_text` / `content_corpus` / `artifact_title`)
+    **Produces:** `artifacts` (per-destination results), `title`
+    **Destinations:** `platform` storage · Obsidian · Notion
+    **Anti-purpose:** not for notifications or in-product-only display.
+
+    See [Integrations — Notion](/integration/notion).
+  </Accordion>
+
+  <Accordion title="Archiver Agent (archiver_agent) · sink">
+    Delivers a result through a notification-style channel. Use this when you want to send or surface a result rather than create a durable file.
+
+    **Consumes:** summary or synthesis text
+    **Produces:** `status` (`delivery_status`)
+    **Destinations:** `workflow_detail` (default) · Gmail · Slack
+    **Anti-purpose:** not for durable file artifacts (use `file_writer_agent` for Notion pages).
 
     See [Integrations — Gmail](/integration/gmail) and [Integrations — Slack](/integration/slack).
   </Accordion>
-
-  <Accordion title="Extractor Agent (extractor_agent)">
-    Atomic structured-extraction agent. Pulls typed fields from raw text using the platform LLM. Use it to turn unstructured pages or corpus text into structured records for downstream analysis.
-
-    **Consumes:** raw text or scraped pages  
-    **Produces:** `extracted` (structured object), `extraction_notes` (string)  
-    **Runtime adapter:** `openai-compatible-chat`
-  </Accordion>
-
-  <Accordion title="File Writer Agent (file_writer_agent)">
-    Persists workflow output to one or more destinations — platform storage, Obsidian-flavored storage, or Notion. Each destination runs independently; a failure at one does not block the others.
-
-    **Consumes:** final content string from summarize or analyze steps  
-    **Produces:** `artifacts` (per-destination results with URLs and status), `title`  
-    **Destinations:** `platform`, `obsidian`, `notion`  
-    **Capability:** optional `notion` OAuth — see [Integrations — Notion](/integration/notion)
-  </Accordion>
-
-  <Accordion title="Scraper Agent (scraper_agent)">
-    Atomic URL fetcher backed by Composio Firecrawl scrape. Takes a list of URLs and returns extracted markdown. Use it to fetch full content from already-known URLs — not as a search engine.
-
-    **Consumes:** a list of URLs (often from `web_search_agent.result_urls`)  
-    **Produces:** `scraped_pages` (per-URL results), `scraped_text_corpus` (concatenated text)  
-    **Runtime adapter:** `composio-firecrawl`
-
-    See [Integrations — Firecrawl](/integration/firecrawl).
-  </Accordion>
-
-  <Accordion title="Summarize Agent (summarize_agent)">
-    Atomic summarization agent. Compresses arbitrary input text into a summary and key points using the platform LLM.
-
-    **Consumes:** text corpus from scraped pages or analysis output  
-    **Produces:** `summary` (markdown), `key_points` (array)  
-    **Runtime adapter:** `openai-compatible-chat`
-  </Accordion>
-
-  <Accordion title="Translate Agent (translate_agent)">
-    Batch-translates multiple source texts into a target locale while preserving proper nouns, code blocks, markdown structure, URLs, and emoji. Built on the `translate-style` skill.
-
-    **Consumes:** one or more source text strings  
-    **Produces:** `translated_text` (first translation as scalar), `translations` (ordered array)  
-    **Skill:** `translate-style`
-  </Accordion>
-
-  <Accordion title="Web Search Agent (web_search_agent)">
-    Atomic public-web search agent. Uses Firecrawl as the core search provider and can enrich result coverage with Google CSE, Brave Search, and source-evaluation scoring when those optional capabilities are available.
-
-    **Consumes:** a search query  
-    **Produces:** `result_urls`, `results_compact_text`, `scraped_pages`, `scraped_text_corpus`, `results`  
-    **Core capability:** `composio/firecrawl` (required); Google CSE, Brave Search, source-evaluation (optional enhancements)
-
-    See [Integrations — Firecrawl](/integration/firecrawl).
-  </Accordion>
 </AccordionGroup>
+
+## BioMed research pack
+
+A domain-specific pack of seven agents for PubMed-grounded biomedical research — query planning, paper triage, citation resolution, PDF retrieval, and Zotero export. The Planner reaches for these when a request is grounded in clinical / life-science literature.
+
+The BioMed pack is gated behind a paid plan. See the dedicated [BioMed research pack](/concepts/biomed) page for the full agent roster and pipeline.
+
+## Running connected apps
+
+Beyond the named agents above, the Planner can drive any [connected app](/concepts/connections) — Gmail, Notion, Slack, HubSpot, Linear, Attio, and more — through generic connector agents. You never wire these by name; you describe the outcome and the Planner resolves the right tool calls at execution time using your team's OAuth grant.
 
 ## How agents connect
 
-Agents are designed to chain: `web_search_agent` feeds URLs into `scraper_agent`, which feeds a corpus into `summarize_agent` or `analyze_agent`, which feeds final content into `file_writer_agent` or `archiver_agent`. The Planner wires these bindings automatically based on your goal.
+Agents chain by role and by the **semantics** of their outputs, not just their raw types. `web_search_agent` feeds URLs into a collector, which feeds a corpus into `summarize_agent` or `analyze_agent`, which feeds final content into `file_writer_agent` or `archiver_agent`. The validator rejects bindings whose meaning is wrong even when the types match — so a `document_list` can't be passed where a `url_list` is required. The Planner wires all of this automatically based on your goal.

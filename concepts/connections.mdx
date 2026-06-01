@@ -1,45 +1,63 @@
 ---
 title: "Connections"
-description: "Team-scoped OAuth grants powered by Composio."
+description: "Team-scoped app connections — OAuth via Composio plus first-party MCP integrations."
 ---
 
-A connection is an OAuth grant that lets your workflows act on behalf of your team in an external service — Gmail, Notion, HubSpot, Slack, or Firecrawl. Connections are shared: connect once, and every team member's workflows can use it.
+A connection is an authorization grant that lets your workflows act on behalf of your team in an external app — Gmail, Notion, Slack, HubSpot, Linear, Attio, and more. Connections are shared: connect once from the **Apps** page, and every team member's workflows can use it.
 
-## How connections are scoped
+## Where connections live
 
-Connections are stored in `team_connections` and are shared across all members of the team. Composio tracks each user's connected account under the entity ID `celerflow-${userId}` for deduplication, but connection membership is team-level. You don't need to reconnect when a colleague joins.
+Open **Apps** from the sidebar (`/{slug}/apps`) to see every connectable app, its status, and a connect / disconnect button. The older `Settings → Connections` path still works — it redirects to **Apps**.
 
-## Connecting a service
+## Two connection sources
+
+All connections are stored in one table, `provider_connections`, with a `source` field that routes everything:
+
+| Source | What it is | Examples |
+|---|---|---|
+| `composio` | OAuth grants brokered by [Composio](https://composio.dev) | Gmail, Notion, Slack, HubSpot, Linear, Airtable, GitHub, Zendesk, Calendly, Zoom, LinkedIn, Google Workspace |
+| `first_party_mcp` | A direct OAuth + MCP integration CelerFlow runs itself | Attio |
+
+Disconnecting deletes the row — there's no revoked-but-remembered state. You can always reconnect from a clean slate. Connection membership is team-level, so you don't need to reconnect when a colleague joins.
+
+## Connecting an app
 
 <Steps>
-  <Step title="Open Settings → Connections">
-    Navigate to your workspace settings and select the Connections tab. See [Settings](/dashboard/settings).
+  <Step title="Open Apps">
+    Select **Apps** from the sidebar. See [Settings](/dashboard/settings) for the surrounding navigation.
   </Step>
   <Step title="Click Connect">
-    Click **Connect** next to the service you want to add. The backend starts a Composio connected account flow.
+    Click **Connect** next to the app you want to add. CelerFlow starts the OAuth flow for that source.
   </Step>
   <Step title="Complete OAuth">
-    A popup opens the provider's OAuth consent screen. Authorize access and the popup closes.
+    A popup opens the provider's consent screen. Authorize access and the popup closes.
   </Step>
   <Step title="Wait for confirmation">
-    The frontend polls `/oauth/status` with exponential backoff — roughly 2 s → 3 s → 5 s → 8 s → 12 s, up to about 30 seconds total — until Composio reports the account as active. The card updates to **Connected** when done.
+    The card polls for status until the account reports as active, then flips to **Connected** — usually within a few seconds.
   </Step>
 </Steps>
 
 ## Stale and deleted connections
 
-If Composio returns a `404` for a connection, the UI card collapses to `missing` or `not_connected`. You'll need to reconnect.
+If a provider reports that an account no longer exists (a confirmed `404`), the card collapses to a `missing` / `not_connected` state and you'll need to reconnect.
 
 <Warning>
-  Non-404 transient errors (timeouts, 5xx) do **not** silently disconnect a connection. The UI continues treating it as valid. Only a confirmed 404 triggers the missing state.
+  Transient errors (timeouts, 5xx) do **not** silently disconnect an app. The card keeps treating it as valid. Only a confirmed not-found triggers the missing state.
 </Warning>
+
+## Platform-managed capabilities
+
+Some capabilities don't require a connection at all. Web search and page extraction (Firecrawl, Tavily) are **platform-managed** — CelerFlow owns the credentials and billing, so the Planner can always use them without any team setup. See [Integrations — Firecrawl](/integration/firecrawl).
 
 ## Supported integrations
 
-- [Gmail](/integration/gmail)
-- [Notion](/integration/notion)
-- [HubSpot](/integration/hubspot)
-- [Slack](/integration/slack)
-- [Firecrawl](/integration/firecrawl)
+Apps the Planner can use today (the connectable set grows over time):
 
-The [Planner](/concepts/planner) surfaces a connection card in chat if a workflow step requires a provider that isn't connected yet. You can connect it in place without leaving the conversation.
+- **Communication & delivery** — [Gmail](/integration/gmail), [Slack](/integration/slack)
+- **Docs & knowledge** — [Notion](/integration/notion), Google Docs, Google Sheets, Google Drive, Airtable
+- **CRM & sales** — [HubSpot](/integration/hubspot), [Attio](/integration/attio)
+- **Dev & project** — Linear, GitHub
+- **Scheduling & support** — Google Calendar, Calendly, Zoom, Zendesk
+- **Web** — [Firecrawl](/integration/firecrawl) (platform-managed)
+
+The [Planner](/concepts/planner) surfaces a connection card in chat if a workflow step needs an app that isn't connected yet — you can connect it in place without leaving the conversation.

@@ -31,9 +31,16 @@
               "concepts/workflows",
               "concepts/planner",
               "concepts/platform-agents",
+              "concepts/triggers",
               "concepts/connections",
               "concepts/runs",
               "concepts/approvals"
+            ]
+          },
+          {
+            "group": "BioMed research",
+            "pages": [
+              "concepts/biomed"
             ]
           },
           {
@@ -41,8 +48,9 @@
             "pages": [
               "integration/gmail",
               "integration/notion",
-              "integration/hubspot",
               "integration/slack",
+              "integration/hubspot",
+              "integration/attio",
               "integration/firecrawl"
             ]
           },
@@ -51,6 +59,7 @@
             "pages": [
               "dashboard/building-a-workflow",
               "dashboard/executions",
+              "dashboard/browser-extension",
               "dashboard/settings"
             ]
           },
@@ -59,7 +68,6 @@
             "pages": [
               "platform/billing",
               "platform/teams-rbac",
-              "platform/audit-log",
               "platform/roadmap"
             ]
           }

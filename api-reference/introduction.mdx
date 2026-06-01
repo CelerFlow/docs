@@ -1,39 +1,37 @@
 ---
 title: "API reference"
-description: "CelerFlow's public REST API is in development. Here's how to prepare."
+description: "Trigger workflows over HTTP today; the full read API is in development."
 ---
 
 <Note>
-  **In development.** The public REST API surface is not yet stable. Endpoint shapes, auth flows, and error formats may change. If you're interested in early access, let us know — see [Roadmap](/platform/roadmap).
+  **Partial today.** You can already start a workflow over HTTP via an [API trigger](/concepts/triggers#api-trigger). The broader read API — fetching runs and listing workflows — is still in development, and its endpoint shapes and error formats may change.
 </Note>
 
-## What's coming
+## Available today: API triggers
 
-When the public API ships, you'll be able to:
+Every deployed workflow can expose a single **API trigger** — an HTTP endpoint that starts a run:
 
-- Trigger a workflow run programmatically.
+```
+POST /triggers/api/{triggerId}
+Authorization: Bearer cfk_xxx
+Content-Type: application/json
+
+{ "payload": { ... } }
+```
+
+The `cfk_` key is created when you add an API trigger to a workflow. The request body is passed into the run as trigger context, which steps can bind to. See [Triggers](/concepts/triggers) for the full setup, plus webhook and schedule triggers.
+
+## In development: the read API
+
+When the read surface ships, you'll also be able to:
+
 - Fetch the status and step output of a specific run.
 - List workflows and their recent runs for a team.
 
-Every endpoint will accept a team-scoped API key via `Authorization: Bearer <key>`.
-
-## Generate an API key today
-
-You can already create API keys from the in-product Settings so you're ready the moment the API goes live.
-
-<Steps>
-  <Step title="Open API keys">
-    From your workspace, go to **Settings → API keys**.
-  </Step>
-  <Step title="Create a key">
-    Name the key so you can identify it later. Team-scoped — it can call any API action the team has access to.
-  </Step>
-  <Step title="Store it safely">
-    The key is shown once. Treat it like a password. If you lose it, revoke it and generate a new one.
-  </Step>
-</Steps>
+These will use the same team-scoped `Authorization: Bearer <key>` scheme. If you'd like early access, let us know — see [Roadmap](/platform/roadmap).
 
 ## See also
 
-- [Workflows](/concepts/workflows) — the lifecycle the API will expose.
-- [Runs & executions](/concepts/runs) — what the run fetch endpoints will return.
+- [Triggers](/concepts/triggers) — webhook, API, and schedule triggers you can use now.
+- [Workflows](/concepts/workflows) — the lifecycle the API exposes.
+- [Runs & executions](/concepts/runs) — what the run-fetch endpoints will return.

@@ -1,15 +1,25 @@
 ---
 title: "Settings"
-description: "Manage your workspace's OAuth connections and billing."
+description: "Workspace configuration — apps, the browser extension, and billing."
 ---
 
-Settings is the per-workspace configuration hub. Today it covers OAuth connections and billing. More surfaces (team, API keys, audit, notifications, appearance) are on the [roadmap](/platform/roadmap).
+Your workspace's configuration is split across a few dedicated surfaces in the sidebar. More settings (team management, API keys, notifications, appearance) are on the [roadmap](/platform/roadmap).
 
 <CardGroup cols={2}>
-  <Card title="Connections" icon="plug" href="/concepts/connections">
-    Manage the team-shared OAuth connections (Gmail, Notion, and others) that workflows read and write through.
+  <Card title="Apps" icon="plug" href="/concepts/connections">
+    Connect and manage the team-shared apps (Gmail, Notion, Slack, Attio, and more) that workflows read and write through. Lives at the top-level **Apps** entry.
+  </Card>
+  <Card title="Browser extension" icon="puzzle-piece" href="/dashboard/browser-extension">
+    Install and configure the handoff extension used to capture paywalled PDFs in BioMed workflows.
   </Card>
   <Card title="Billing" icon="credit-card" href="/platform/billing">
-    View your current plan, usage, and upgrade options.
+    View your current plan, usage, and upgrade options. Managed through Stripe.
+  </Card>
+  <Card title="Workspace" icon="gear" href="/concepts/workspaces">
+    Basic workspace settings for the current team.
   </Card>
 </CardGroup>
+
+<Note>
+  The connections surface moved from `Settings → Connections` to the top-level **Apps** page. The old path still works — it redirects to **Apps**.
+</Note>

@@ -4,24 +4,24 @@ description: "CelerFlow builds and runs automated workflows from a chat. Describ
 ---
 
 <Note>
-  **Public Beta** — CelerFlow is live at [celerflow.vercel.app](https://celerflow.vercel.app). The public API is in development — see the [API reference](/api-reference/introduction).
+  **Public Beta** — CelerFlow is live at [celerflow.ai](https://celerflow.ai). The public API is in development — see the [API reference](/api-reference/introduction).
 </Note>
 
 ## Say it once. It's done.
 
-Tell CelerFlow what you need in plain English. The Planner reads your description, drafts a step-by-step workflow, and waits for your confirmation. Once you approve, CelerFlow runs every step automatically — no code, no config, no drag-and-drop.
+Tell CelerFlow what you need in plain English. The Planner reads your description, assembles a step-by-step workflow from a pool of cloud agents, and waits for your confirmation. Once you approve, CelerFlow runs every step automatically — no code, no config, no drag-and-drop.
 
 <CardGroup cols={2}>
   <Card title="Build in chat" icon="wand-magic-sparkles" href="/concepts/planner">
     Describe the outcome you want. The Planner figures out every step.
   </Card>
 
-  <Card title="Connect your tools" icon="plug" href="/concepts/connections">
-    Team-scoped OAuth for Gmail, Notion, HubSpot, Slack, and Firecrawl — connect once, use everywhere.
+  <Card title="Connect your apps" icon="plug" href="/concepts/connections">
+    Team-scoped OAuth for Gmail, Notion, Slack, HubSpot, Linear, Attio, and more — connect once, use everywhere.
   </Card>
 
-  <Card title="Approve what matters" icon="shield-check" href="/concepts/approvals">
-    CelerFlow pauses for your input when an OAuth connection is missing or a Notion target needs selecting.
+  <Card title="Trigger automatically" icon="bolt" href="/concepts/triggers">
+    Run workflows on a schedule, from an incoming webhook, or via an API key.
   </Card>
 
   <Card title="Run and rerun" icon="play" href="/concepts/runs">
@@ -33,21 +33,35 @@ Tell CelerFlow what you need in plain English. The Planner reads your descriptio
 
 <Steps>
   <Step title="Sign in and create a workspace">
-    Go to [celerflow.vercel.app](https://celerflow.vercel.app), sign in, and complete the onboarding flow to set up your workspace.
+    Go to [celerflow.ai](https://celerflow.ai), sign in, and complete the onboarding flow to set up your team workspace.
   </Step>
 
-  <Step title="Connect a tool">
-    Head to Connections and link your first tool. Gmail is the fastest place to start.
+  <Step title="Connect an app">
+    Head to **Apps** and link your first tool. Gmail is the fastest place to start.
   </Step>
 
   <Step title="Describe what you need">
-    Open a new workflow and type what you want to happen in plain English. Be specific about the outcome — CelerFlow handles the rest.
+    Click **New chat** and type what you want to happen in plain English. Be specific about the outcome — CelerFlow handles the rest.
   </Step>
 
   <Step title="Confirm and deploy">
-    Review the draft workflow the Planner generates. Confirm it and watch each step run in real time.
+    Review the draft workflow the Planner generates on the canvas. Confirm it and watch each step run in real time.
   </Step>
 </Steps>
+
+## What you can build
+
+<CardGroup cols={3}>
+  <Card title="Monitoring" icon="binoculars" href="/concepts/platform-agents">
+    Scheduled search → summarize → translate → deliver. News and topic digests on autopilot.
+  </Card>
+  <Card title="Research" icon="magnifying-glass" href="/concepts/platform-agents">
+    Deep web search → extract → analyze → file a report to Notion or platform storage.
+  </Card>
+  <Card title="BioMed research" icon="flask" href="/concepts/biomed">
+    PubMed search → triage → PDF retrieval → Zotero library. A dedicated agent pack for life-science teams.
+  </Card>
+</CardGroup>
 
 ## Get started
 
